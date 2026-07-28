@@ -1,0 +1,9 @@
+{
+  "network": "arbitrumSepolia",
+  "chainId": 421614,
+  "priceOracle": "0x309180b85a4316d0c582cb1aa5f809866d90d38a",
+  "settlementLedger": "0x76e33c415595550f30286114b4270fc3ef857303",
+  "owner": "0xa6f07f90fb1defe9a3847870e5860d6c9017bb6d",
+  "maxStaleness": "3600",
+  "deployedAt": "2026-07-28T08:33:30.122Z"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@fangorn-market/agent-runtime",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic strategy scheduler + chain settlement client (extends the Fangorn agent toolbay concept, no LLM).",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "e2e:local": "tsx src/scripts/local-e2e.ts",
+    "preflight": "node --env-file=../../.env --import tsx src/scripts/preflight.ts",
+    "seed:grove": "node --env-file=../../.env --import tsx src/scripts/seed-grove.ts",
+    "go-live": "node --env-file=../../.env --import tsx src/scripts/go-live.ts",
+    "publish:premium": "node --env-file=../../.env --import tsx src/scripts/publish-premium.ts",
+    "buy:premium": "node --env-file=../../.env --import tsx src/scripts/buy-premium.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fangorn-market/db": "workspace:*",
+    "@fangorn-market/grove": "workspace:*",
+    "@fangorn-market/shared": "workspace:*",
+    "@fangorn-market/trading": "workspace:*",
+    "@fangorn-market/x402pay": "workspace:*",
+    "viem": "^2.47.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3"
+  }
+}

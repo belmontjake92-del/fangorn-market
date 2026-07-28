@@ -1,0 +1,22 @@
+{
+  "name": "@fangorn-market/shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared types, units, Grove conventions, contract ABIs, and deployment loading for Fangorn Market.",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "sync-abi": "node scripts/sync-abi.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "viem": "^2.47.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.8.3"
+  }
+}

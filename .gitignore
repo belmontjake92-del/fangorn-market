@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+lib/
+*.tsbuildinfo
+
+# env & secrets — NEVER commit
+.env
+.env.*
+!.env.example
+
+# fangorn local pointer state
+.fangorn/
+
+# local runtime data (sqlite, etc.)
+.data/
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# os / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# local reference clones of the upstream repos (consumed from npm, not built here)
+/_repos/

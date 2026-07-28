@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* Fangorn Market design tokens — lifted from the prototype. */
+@theme {
+  --color-bg: #050506;
+  --color-surface: #0d0d0e;
+  --color-surface-2: #151517;
+  --color-elevated: #1c1c1f;
+  --color-border: #232326;
+  --color-border-soft: #171719;
+
+  --color-fg: #f4f4f5;
+  --color-muted: #a1a1aa;
+  --color-dim: #71717a;
+  --color-faint: #52525b;
+
+  --color-accent: #c6f24e;
+  --color-accent-bright: #d4f76a;
+  --color-accent-dim: #8aad3f;
+
+  --color-cyan: #6fa8c9;
+  --color-violet: #9a8fd4;
+  --color-amber: #d6a84a;
+  --color-loss: #d97066;
+  --color-gain: #c6f24e;
+
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Playfair Display", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(198, 242, 78, 0.28);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #232326;
+  border-radius: 6px;
+  border: 2px solid #050506;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2c2c31;
+}

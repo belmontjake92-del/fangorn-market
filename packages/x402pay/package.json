@@ -1,0 +1,25 @@
+{
+  "name": "@fangorn-market/x402pay",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "x402f paid/encrypted data — seller (encrypt + createResource) and buyer (pay + decrypt) helpers, ported from the x402f reference.",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fangorn-network/sdk": "^2026.7.27",
+    "@semaphore-protocol/group": "^4.14.2",
+    "@semaphore-protocol/identity": "^4.14.2",
+    "@semaphore-protocol/proof": "^4.14.2",
+    "viem": "^2.47.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.8.3"
+  }
+}

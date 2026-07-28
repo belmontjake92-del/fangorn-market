@@ -1,0 +1,20 @@
+{
+  "name": "fangorn-market",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Fangorn Market — open marketplace, studio, and intelligence graph for financial agents on Robinhood Chain, built on the Fangorn protocol.",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "packageManager": "pnpm@10.4.0",
+  "scripts": {
+    "check:sepolia": "pnpm --filter @fangorn-market/grove run check:sepolia",
+    "typecheck": "pnpm -r run typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3"
+  }
+}

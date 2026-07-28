@@ -1,0 +1,9 @@
+{
+  "network": "localhost",
+  "chainId": 0,
+  "priceOracle": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+  "settlementLedger": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+  "maxStaleness": "3600",
+  "deployedAt": "2026-07-28T03:20:29.418Z"
+}

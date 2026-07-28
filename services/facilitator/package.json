@@ -1,0 +1,19 @@
+{
+  "name": "@fangorn-market/facilitator-runner",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local launcher for the x402f facilitator (@fangorn-network/facilitator), mapping our .env.",
+  "scripts": {
+    "start": "node --env-file=../../.env --import tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fangorn-network/facilitator": "^2026.4.22"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3"
+  }
+}

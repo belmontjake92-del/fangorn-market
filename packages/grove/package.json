@@ -1,0 +1,27 @@
+{
+  "name": "@fangorn-market/grove",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin wrapper over @fangorn-network/sdk — Grove (The Grove) publish/subscribe/read helpers.",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check:sepolia": "tsx src/scripts/check-sepolia.ts",
+    "test": "node --test --import tsx ./src/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fangorn-market/db": "workspace:*",
+    "@fangorn-market/shared": "workspace:*",
+    "@fangorn-network/sdk": "^2026.7.27",
+    "viem": "^2.47.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3"
+  }
+}
