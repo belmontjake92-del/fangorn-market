@@ -15,9 +15,12 @@
  */
 import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
-import type { Hex } from "viem";
+import { createPublicClient, createWalletClient, http, type Address, type Hex, type PublicClient } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { arbitrumSepolia } from "viem/chains";
 import { Repo } from "@fangorn-market/db";
 import { backfill, createGroveClient } from "@fangorn-market/grove";
+import { payAndFetch, resolveX402Config } from "@fangorn-market/x402pay";
 import {
   deploymentId,
   findRepoRoot,
@@ -32,11 +35,65 @@ import {
 } from "@fangorn-market/shared";
 import { unrealizedPnl } from "@fangorn-market/trading";
 import { ChainContext } from "../chain.js";
-import { DeterministicAgent } from "../agent.js";
+import { DeterministicAgent, type PremiumBias } from "../agent.js";
 
 const NETWORK = "arbitrumSepolia";
 const SYMBOL = process.env.SEED_SYMBOL ?? "RH:ACME";
 const DEPLOYMENT_KEY = process.env.DEPLOYMENT_KEY ?? "sepolia-atlas-momentum";
+const USE_PREMIUM = process.env.USE_PREMIUM === "1";
+const LIMIT = process.env.GO_LIVE_LIMIT ? Number(process.env.GO_LIVE_LIMIT) : Infinity;
+
+/**
+ * Pay for + decrypt the latest premium confidence signal (x402f) via the buyer
+ * wallet, and turn it into a directional bias the agent won't fight. Requires
+ * the facilitator running and BUYER_PRIVATE_KEY funded with USDC.
+ */
+async function buyPremiumBias(repo: Repo): Promise<PremiumBias | undefined> {
+  const buyerKey = process.env.BUYER_PRIVATE_KEY as Hex | undefined;
+  if (!buyerKey) throw new Error("USE_PREMIUM=1 requires BUYER_PRIVATE_KEY (funded with USDC) in .env");
+  const resource = repo.latestResource(SYMBOL);
+  if (!resource) throw new Error(`No premium resource for ${SYMBOL}. Run publish:premium first.`);
+
+  const x402 = resolveX402Config();
+  const publicClient = createPublicClient({ chain: arbitrumSepolia, transport: http(x402.rpcUrl) }) as PublicClient;
+  const buyerWallet = createWalletClient({
+    account: privateKeyToAccount(buyerKey),
+    chain: arbitrumSepolia,
+    transport: http(x402.rpcUrl),
+  });
+
+  console.log(`Buying premium signal "${resource.name}" for ${Number(resource.price) / 1e6} USDC…`);
+  const result = await payAndFetch({
+    config: x402,
+    buyerWallet,
+    publicClient,
+    owner: resource.owner as Address,
+    name: resource.name,
+    price: resource.price,
+    expectedPlaintextHash: resource.plaintextHash,
+  });
+  const signal = JSON.parse(result.text) as { bias?: string; confidence?: number };
+  const now = Math.floor(Date.now() / 1000);
+  if (result.paidNow) {
+    repo.insertPurchase({
+      resourceId: resource.resourceId,
+      owner: resource.owner,
+      buyerStealth: result.stealthAddress,
+      amount: resource.price,
+      nullifier: result.nullifier,
+      deploymentId: deploymentId(DEPLOYMENT_KEY),
+      ts: now,
+    });
+  }
+  repo.addActivity({
+    ts: now,
+    kind: "access-payment",
+    message: `Agent ${result.paidNow ? "paid for" : "read"} premium signal: bias=${signal.bias}, confidence=${signal.confidence}`,
+  });
+  const bias = (signal.bias === "long" || signal.bias === "short" ? signal.bias : "flat") as PremiumBias["bias"];
+  console.log(`  → bias=${bias}, confidence=${signal.confidence} (${result.paidNow ? "paid" : "already settled"})\n`);
+  return { bias, confidence: Number(signal.confidence ?? 0) };
+}
 
 async function main() {
   const key = process.env.FANGORN_PRIVATE_KEY as Hex | undefined;
@@ -102,11 +159,17 @@ async function main() {
   }
   repo.upsertDeployment(config, "live");
 
-  // 3. Relay each Grove price to the oracle and let the agent settle on-chain.
-  const agent = new DeterministicAgent({ chain, repo, config });
+  // 3. Optionally buy premium intelligence and factor it into decisions.
+  const premium = USE_PREMIUM ? await buyPremiumBias(repo) : undefined;
+
+  // 4. Relay each Grove price to the oracle and let the agent settle on-chain.
+  const agent = new DeterministicAgent({ chain, repo, config, premium });
+  const ticks = Number.isFinite(LIMIT) ? observations.slice(0, LIMIT) : observations;
   let fills = 0;
-  console.log(`\nReplaying ${observations.length} observations through the live oracle + ledger…\n`);
-  for (const o of observations) {
+  console.log(
+    `Replaying ${ticks.length} observations through the live oracle + ledger${premium ? ` (premium bias: ${premium.bias})` : ""}…\n`,
+  );
+  for (const o of ticks) {
     await chain.setPrice(o.marketId, o.price);
     const r = await agent.tick(o.price, o.ts);
     if (r.action === "fill") {
@@ -131,7 +194,14 @@ async function main() {
   console.log(`\n  Tracer bullet complete on Robinhood Chain's stand-in (Arbitrum Sepolia).`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// USE_PREMIUM spawns Semaphore's proof worker, which keeps the loop alive; defer
+// the exit a tick so libuv can close the worker handle cleanly on Windows.
+function exit(code: number): void {
+  setTimeout(() => process.exit(code), 300);
+}
+main()
+  .then(() => exit(0))
+  .catch((err) => {
+    console.error(err);
+    exit(1);
+  });

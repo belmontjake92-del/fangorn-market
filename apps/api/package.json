@@ -13,6 +13,7 @@
   "dependencies": {
     "@fangorn-market/db": "workspace:*",
     "@fangorn-market/shared": "workspace:*",
+    "@fangorn-market/trading": "workspace:*",
     "express": "^4.21.2"
   },
   "devDependencies": {

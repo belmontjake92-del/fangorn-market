@@ -7,6 +7,20 @@ import type { ChainContext } from "./chain.js";
 
 export type TickAction = "hold" | "fill" | "rejected";
 
+/** A paid premium signal that biases the agent's decisions (x402f). */
+export interface PremiumBias {
+  bias: "long" | "short" | "flat";
+  confidence: number;
+}
+
+/** Suppress strategy targets that fight a paid directional bias. */
+function gateTarget(target: bigint, premium?: PremiumBias): bigint {
+  if (!premium || premium.bias === "flat") return target;
+  if (premium.bias === "long" && target < 0n) return 0n;
+  if (premium.bias === "short" && target > 0n) return 0n;
+  return target;
+}
+
 export interface TickResult {
   action: TickAction;
   price: bigint;
@@ -41,13 +55,16 @@ export class DeterministicAgent {
   private marketAllowed = false;
   private initialized = false;
 
+  private readonly premium?: PremiumBias;
+
   constructor(
-    private readonly deps: { chain: ChainContext; repo: Repo; config: DeploymentConfig },
+    private readonly deps: { chain: ChainContext; repo: Repo; config: DeploymentConfig; premium?: PremiumBias },
   ) {
     this.strategy = new ThresholdMomentum(deps.config.strategy);
     this.id = deps.config.id;
     this.marketId = deps.config.market.marketId;
     this.symbol = deps.config.market.symbol;
+    this.premium = deps.premium;
   }
 
   /** Seed in-memory state from chain once (safe: no fill is pending yet). */
@@ -71,7 +88,9 @@ export class DeterministicAgent {
     const { chain, repo } = this.deps;
     this.strategy.observe(priceScaled);
 
-    const delta = this.strategy.decide(priceScaled, this.size);
+    // Factor in paid premium intelligence: don't fight its directional bias.
+    const target = gateTarget(this.strategy.targetSize(priceScaled), this.premium);
+    const delta = target - this.size;
     if (delta === 0n) {
       this.snapshot(priceScaled);
       return { action: "hold", price: priceScaled, delta: 0n };

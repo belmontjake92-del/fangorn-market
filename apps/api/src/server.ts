@@ -1,6 +1,7 @@
 import express, { type Express, type Request, type Response } from "express";
 import type { Repo } from "@fangorn-market/db";
 import { sendJson } from "./serialize.js";
+import { parseBacktestParams, runBacktest } from "./backtest.js";
 
 /**
  * Build the Fangorn Market API over the data layer. All amounts/prices/sizes are
@@ -61,6 +62,11 @@ export function createServer(repo: Repo): Express {
     const owner = String(req.params.owner);
     const { gross, count } = repo.earningsForOwner(owner);
     sendJson(res, { owner, grossUsdcBaseUnits: gross, purchases: count, recent: repo.listPurchases().slice(0, 20) });
+  });
+
+  // ── Agent Lab: deterministic backtest (trading engine, no chain) ─────────
+  app.get("/api/backtest", (req: Request, res: Response) => {
+    sendJson(res, runBacktest(parseBacktestParams(req.query as Record<string, unknown>)));
   });
 
   // ── Activity feed ────────────────────────────────────────────────────────

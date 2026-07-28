@@ -4,9 +4,14 @@ import { ConnectWallet } from "./ConnectWallet";
 const nav = [
   { to: "/", label: "Overview", end: true },
   { to: "/marketplace", label: "Marketplace" },
+  { to: "/studio", label: "Agent Studio" },
+  { to: "/lab", label: "Agent Lab" },
   { to: "/grove", label: "The Grove" },
+  { to: "/leaderboards", label: "Leaderboards" },
   { to: "/earnings", label: "Earnings" },
   { to: "/activity", label: "Activity" },
+  { to: "/trust", label: "Trust Center" },
+  { to: "/settings", label: "Settings" },
 ];
 
 function Logo() {

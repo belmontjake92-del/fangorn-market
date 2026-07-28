@@ -95,15 +95,27 @@ export class ChainContext {
   // ───────────────────────────── oracle ─────────────────────────────
 
   async setPrice(marketId: Hex, price: bigint): Promise<Hex> {
-    const hash = await this.walletClient.writeContract({
-      address: this.oracle,
-      abi: PriceOracleAbi,
-      functionName: "setPrice",
-      args: [marketId, price],
-      account: this.account,
-      chain: this.chain,
-    });
-    return this.send(hash);
+    // setPrice is idempotent (it just stores a value), and these writes
+    // occasionally revert transiently on Arbitrum Sepolia's public/relayed RPC
+    // (the identical call replays fine). Retry a few times before giving up.
+    let lastErr: unknown;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const hash = await this.walletClient.writeContract({
+          address: this.oracle,
+          abi: PriceOracleAbi,
+          functionName: "setPrice",
+          args: [marketId, price],
+          account: this.account,
+          chain: this.chain,
+        });
+        return await this.send(hash);
+      } catch (err) {
+        lastErr = err;
+        await new Promise((r) => setTimeout(r, 1500));
+      }
+    }
+    throw lastErr;
   }
 
   async getPrice(marketId: Hex): Promise<{ price: bigint; updatedAt: bigint }> {
