@@ -50,7 +50,66 @@ export default function Overview() {
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-5">
+      {/* What it is */}
+      <p className="mt-8 max-w-3xl text-sm leading-relaxed text-muted">
+        <span className="text-fg">Fangorn Market</span> is an open marketplace, creation studio, and shared intelligence
+        network for autonomous financial agents. Agents observe markets, contribute structured intelligence to{" "}
+        <span className="text-accent">The Grove</span>, and buy each other's signals — so every new agent starts from
+        everything the network has already learned, not an empty database.
+      </p>
+
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
+        <FeatureCard
+          title="Deploy proven agents"
+          body="Discover agents already built and optimized by the community. Compare transparent performance, risk, and provenance before you deploy."
+          cta="Explore Agents"
+          to="/marketplace"
+        />
+        <FeatureCard
+          title="Build from The Grove"
+          body="Your first agent should not start from zero. Compose a strategy, connect living datasets, and backtest — no empty database."
+          cta="Open Agent Studio"
+          to="/studio"
+        />
+      </div>
+
+      {/* Access modes */}
+      <div className="mt-10">
+        <h2 className="font-display text-2xl text-fg">Share the value. Keep the edge.</h2>
+        <p className="mt-1 max-w-2xl text-sm text-muted">
+          Publish the existence, schema, provenance, and price of a dataset without exposing its protected contents.
+        </p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <AccessMode color="#c6f24e" name="Public" body="Anyone may discover and use the data according to its license." />
+          <AccessMode color="#6fa8c9" name="Contributed" body="Approved, normalized observations become available to The Grove." />
+          <AccessMode color="#9a8fd4" name="Encrypted" body="Discoverable, but protected fields stay inaccessible until a rule is met." />
+          <AccessMode color="#d6a84a" name="Monetized" body="The publisher charges per field, query, subscription, or time-limited license." />
+        </div>
+      </div>
+
+      {/* Trust strip */}
+      <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-border-soft py-3 text-[11px] text-dim">
+        {[
+          "2nd place — Arbitrum Open House NYC Buildathon",
+          "Versioned data provenance",
+          "Programmable data access",
+          "Built for Robinhood Chain",
+          "Builder-owned intelligence",
+        ].map((t) => (
+          <span key={t} className="flex items-center gap-1.5">
+            <span className="text-accent">◆</span>
+            {t}
+          </span>
+        ))}
+      </div>
+
+      {/* Your workspace */}
+      <div className="mt-10 flex items-baseline justify-between">
+        <h2 className="font-display text-2xl text-fg">Your workspace</h2>
+        <span className="font-mono text-[11px] text-dim">live · Arbitrum Sepolia</span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
         <Stat label="Active Agents" value={deployments.data?.length ?? "—"} />
         <Stat label="Data Assets" value={assets.data?.length ?? "—"} />
         <Stat label="Grove Records" value={observationCount || "—"} />
@@ -112,5 +171,34 @@ export default function Overview() {
         </div>
       </div>
     </div>
+  );
+}
+
+function FeatureCard({ title, body, cta, to }: { title: string; body: string; cta: string; to: string }) {
+  return (
+    <Card className="flex flex-col justify-between p-6">
+      <div>
+        <h3 className="font-display text-xl text-fg">{title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{body}</p>
+      </div>
+      <Link
+        to={to}
+        className="mt-5 inline-flex w-fit items-center rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-bg hover:bg-accent-bright"
+      >
+        {cta} →
+      </Link>
+    </Card>
+  );
+}
+
+function AccessMode({ color, name, body }: { color: string; name: string; body: string }) {
+  return (
+    <Card className="p-4">
+      <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: `${color}1a` }}>
+        <span className="h-2.5 w-2.5 rounded-full" style={{ background: color }} />
+      </span>
+      <div className="mt-3 text-sm font-medium text-fg">{name}</div>
+      <p className="mt-1 text-[11px] leading-relaxed text-dim">{body}</p>
+    </Card>
   );
 }
