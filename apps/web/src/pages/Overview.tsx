@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
 import { useActivity, useDataAssets, useDeployments, useEarnings, useResources } from "../lib/api";
 import { Badge, Card, Loading, SectionTitle, Stat } from "../components/ui";
-import { PLATFORM_OWNER, agentKind, kindLabel } from "../lib/constants";
+import { NETWORK_LABEL, PLATFORM_OWNER, agentKind, kindLabel } from "../lib/constants";
 import { timeAgo, usdcMicro } from "../lib/format";
 
 export default function Overview() {
@@ -46,7 +46,7 @@ export default function Overview() {
             <Link to="/marketplace" className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-bg hover:bg-accent-bright">Explore Agents</Link>
             <Link to="/studio" className="rounded-full border border-border px-5 py-2 text-sm font-medium text-fg hover:border-accent/40 hover:text-accent">Open Agent Studio</Link>
           </div>
-          <p className="mt-4 font-mono text-[11px] text-dim">All performance shown is simulated on Arbitrum Sepolia.</p>
+          <p className="mt-4 font-mono text-[11px] text-dim">All performance shown is simulated on {NETWORK_LABEL}.</p>
         </div>
       </div>
 
@@ -106,7 +106,7 @@ export default function Overview() {
       {/* Your workspace */}
       <div className="mt-10 flex items-baseline justify-between">
         <h2 className="font-display text-2xl text-fg">Your workspace</h2>
-        <span className="font-mono text-[11px] text-dim">live · Arbitrum Sepolia</span>
+        <span className="font-mono text-[11px] text-dim">live · {NETWORK_LABEL}</span>
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">

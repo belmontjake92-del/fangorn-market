@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import { api, useDeployments, type DeploymentDetail } from "../lib/api";
 import { Badge, Card, Loading, SectionTitle } from "../components/ui";
+import { NETWORK_LABEL } from "../lib/constants";
 import { pnlClass, usd } from "../lib/format";
 
 interface Row {
@@ -83,7 +84,7 @@ export default function Leaderboards() {
         ))}
       </div>
 
-      <SectionTitle right={<span className="text-[11px] text-dim">Simulated fills · Arbitrum Sepolia</span>}>
+      <SectionTitle right={<span className="text-[11px] text-dim">Simulated fills · {NETWORK_LABEL}</span>}>
         <span className="mt-4 block">{b.label}</span>
       </SectionTitle>
 

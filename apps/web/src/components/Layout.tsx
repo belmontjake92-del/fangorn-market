@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { ConnectWallet } from "./ConnectWallet";
+import { NETWORK_LABEL } from "../lib/constants";
 
 const nav = [
   { to: "/", label: "Overview", end: true },
@@ -50,7 +51,7 @@ export function Layout() {
           ))}
         </nav>
         <div className="mt-auto px-3 py-2 text-[10px] leading-relaxed text-faint">
-          Simulated data on Arbitrum Sepolia. Independent app for Robinhood Chain.
+          Simulated data on {NETWORK_LABEL}. Independent app for Robinhood Chain.
         </div>
       </aside>
 

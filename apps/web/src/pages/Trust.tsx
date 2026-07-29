@@ -1,4 +1,5 @@
 import { Card, SectionTitle } from "../components/ui";
+import { NETWORK_LABEL } from "../lib/constants";
 
 const levels = [
   { n: 1, name: "Unverified", desc: "No checks performed." },
@@ -59,7 +60,7 @@ export default function Trust() {
       <div className="mt-8 rounded-xl border border-border-soft bg-surface p-4 text-xs leading-relaxed text-dim">
         Fangorn Market is an independent application designed for Robinhood Chain. References to Robinhood Chain do not
         imply endorsement by or affiliation with Robinhood Markets unless expressly stated. All performance shown is
-        simulated on Arbitrum Sepolia.
+        simulated on {NETWORK_LABEL}.
       </div>
     </div>
   );

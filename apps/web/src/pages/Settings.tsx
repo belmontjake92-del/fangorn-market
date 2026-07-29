@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import { Card, SectionTitle } from "../components/ui";
+import { NETWORK_LABEL } from "../lib/constants";
 import { shortAddr } from "../lib/format";
 
 const policies = [
@@ -50,7 +51,7 @@ export default function Settings() {
         <SectionTitle>Account</SectionTitle>
         <Card className="space-y-2 p-4 text-sm">
           <Row k="Connected wallet" v={address ? shortAddr(address) : "Not connected"} />
-          <Row k="Network" v="Arbitrum Sepolia (Robinhood Chain stand-in)" />
+          <Row k="Network" v={NETWORK_LABEL} />
           <Row k="Settlement asset" v="USDC" />
         </Card>
       </div>

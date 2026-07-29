@@ -4,6 +4,7 @@ import { useQueries } from "@tanstack/react-query";
 import { api, useDeployments, type DeploymentDetail, type DeploymentRow } from "../lib/api";
 import { Sparkline } from "../components/Sparkline";
 import { CATALOG, CATEGORIES, RISK_LEVELS, type AgentState, type CatalogAgent } from "../lib/catalog";
+import { NETWORK_LABEL } from "../lib/constants";
 import { toNum } from "../lib/format";
 
 interface MarketAgent {
@@ -60,7 +61,7 @@ function realToAgent(d: DeploymentRow, detail?: DeploymentDetail): MarketAgent {
     state: "live",
     verified: true,
     perf,
-    period: `${fills.length} fills · Arbitrum Sepolia`,
+    period: `${fills.length} fills · ${NETWORK_LABEL}`,
     price: kind === "signal" ? "0.001 USDC / read" : "Free",
     deploys: null,
     rating: null,
@@ -209,7 +210,7 @@ export default function Marketplace() {
               <AgentCard key={a.href + a.name} a={a} />
             ))}
           </div>
-          <p className="mt-6 text-center text-[11px] text-dim">Catalog performance is simulated mock data. On-chain agents show live Arbitrum Sepolia data.</p>
+          <p className="mt-6 text-center text-[11px] text-dim">Catalog performance is simulated mock data. On-chain agents show live {NETWORK_LABEL} data.</p>
         </div>
       </div>
     </div>
