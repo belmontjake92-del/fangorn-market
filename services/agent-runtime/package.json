@@ -15,6 +15,8 @@
     "go-live": "node --env-file=../../.env --import tsx src/scripts/go-live.ts",
     "publish:premium": "node --env-file=../../.env --import tsx src/scripts/publish-premium.ts",
     "buy:premium": "node --env-file=../../.env --import tsx src/scripts/buy-premium.ts",
+    "run:signal-agent": "node --env-file=../../.env --import tsx src/scripts/run-signal-agent.ts",
+    "run:alert-agent": "node --import tsx src/scripts/run-alert-agent.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

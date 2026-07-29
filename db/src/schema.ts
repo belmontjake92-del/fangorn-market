@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS deployments (
   market_id             TEXT NOT NULL,
   strategy_json         TEXT NOT NULL,
   status                TEXT NOT NULL DEFAULT 'sandbox',
+  kind                  TEXT NOT NULL DEFAULT 'trade',
   created_at            INTEGER NOT NULL DEFAULT 0
 );
 

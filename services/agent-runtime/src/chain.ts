@@ -22,8 +22,26 @@ export const localhostChain = defineChain({
   rpcUrls: { default: { http: ["http://127.0.0.1:8545"] } },
 });
 
+/**
+ * Robinhood L2 — defined from env so the platform can switch to it once it
+ * exists (RH_CHAIN_ID + RH_RPC_URL). NOTE: switching to RH Chain for real also
+ * requires the Fangorn DataRegistry, x402f's SettlementRegistry, and USDC to be
+ * deployed there — our contracts (PriceOracle/SettlementLedger) just redeploy.
+ */
+export function robinhoodChain(env: NodeJS.ProcessEnv = process.env): Chain {
+  return defineChain({
+    id: Number(env.RH_CHAIN_ID ?? 0),
+    name: "Robinhood Chain",
+    nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+    rpcUrls: { default: { http: [env.RH_RPC_URL ?? ""] } },
+  });
+}
+
+/** Resolve the target chain by network name. `NETWORK=robinhood` when it's live. */
 export function resolveChain(network: string): Chain {
-  return network === "arbitrumSepolia" ? arbitrumSepolia : localhostChain;
+  if (network === "arbitrumSepolia") return arbitrumSepolia;
+  if (network === "robinhood") return robinhoodChain();
+  return localhostChain;
 }
 
 export interface ChainConfig {

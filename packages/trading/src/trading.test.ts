@@ -4,6 +4,7 @@ import { SyntheticPriceFeed } from "./feed.js";
 import { applyFill, notional, unrealizedPnl, type Position } from "./position.js";
 import { checkFill, type RiskContext } from "./risk.js";
 import { ThresholdMomentum } from "./strategy.js";
+import { deriveSignal } from "./signal.js";
 
 const noLimits = { maxPositionNotional: 0n, dailyLossLimit: 0n };
 const baseCtx: RiskContext = {
@@ -115,6 +116,33 @@ describe("checkFill — risk gate", () => {
   it("enforces the daily-loss cap", () => {
     const ctx = { ...baseCtx, limits: { maxPositionNotional: 0n, dailyLossLimit: usd(5) } };
     expect(checkFill(ctx, { size: s(1), entry: s(100) }, s(-1), s(90)).reason).to.equal("daily-loss-limit");
+  });
+});
+
+describe("deriveSignal", () => {
+  const rising = Array.from({ length: 12 }, (_, i) => s(100 + i));
+  const falling = Array.from({ length: 12 }, (_, i) => s(120 - i));
+  const flat = Array.from({ length: 12 }, () => s(100));
+
+  it("is long with confidence on a rising series", () => {
+    const sig = deriveSignal(rising);
+    expect(sig.bias).to.equal("long");
+    expect(sig.confidence).to.be.greaterThan(0);
+    expect(sig.momentum).to.be.greaterThan(0);
+  });
+
+  it("is short on a falling series", () => {
+    expect(deriveSignal(falling).bias).to.equal("short");
+  });
+
+  it("is flat on a flat series", () => {
+    const sig = deriveSignal(flat);
+    expect(sig.bias).to.equal("flat");
+    expect(sig.momentum).to.equal(0);
+  });
+
+  it("is deterministic", () => {
+    expect(deriveSignal(rising)).to.deep.equal(deriveSignal(rising));
   });
 });
 

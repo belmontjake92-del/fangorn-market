@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
 import { useActivity, useDataAssets, useDeployments, useEarnings, useResources } from "../lib/api";
 import { Badge, Card, Loading, SectionTitle, Stat } from "../components/ui";
-import { PLATFORM_OWNER, kindLabel } from "../lib/constants";
+import { PLATFORM_OWNER, agentKind, kindLabel } from "../lib/constants";
 import { timeAgo, usdcMicro } from "../lib/format";
 
 export default function Overview() {
@@ -49,9 +49,11 @@ export default function Overview() {
                   <Card className="p-4 transition-colors hover:border-accent/30">
                     <div className="flex items-center justify-between">
                       <div className="font-medium text-fg">{d.agent_name ?? d.key}</div>
-                      <Badge tone={d.status as never}>{d.status}</Badge>
+                      <Badge tone={(agentKind[d.kind ?? "trade"]?.tone ?? "public") as never}>
+                        {agentKind[d.kind ?? "trade"]?.label ?? "Trading"}
+                      </Badge>
                     </div>
-                    <div className="mt-1 text-xs text-muted">{d.market_symbol} · threshold-momentum</div>
+                    <div className="mt-1 text-xs text-muted">{d.market_symbol}</div>
                     <div className="mt-3 font-mono text-[11px] text-dim">{d.id.slice(0, 14)}…</div>
                   </Card>
                 </Link>

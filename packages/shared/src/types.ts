@@ -123,7 +123,8 @@ export interface ActivityEvent {
     | "resumed"
     | "commit-indexed"
     | "resource-published"
-    | "access-payment";
+    | "access-payment"
+    | "alert";
   deploymentId?: Hex;
   message: string;
 }

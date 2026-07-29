@@ -14,3 +14,4 @@ export {
 } from "./position.js";
 export { checkFill, type RiskContext, type RiskDecision, type RiskReason } from "./risk.js";
 export { ThresholdMomentum } from "./strategy.js";
+export { deriveSignal, type DerivedSignal } from "./signal.js";

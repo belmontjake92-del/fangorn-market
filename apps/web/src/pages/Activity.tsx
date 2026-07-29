@@ -11,6 +11,7 @@ const tone: Record<string, string> = {
   "commit-indexed": "paper",
   "deployment-opened": "neutral",
   observation: "neutral",
+  alert: "encrypted",
 };
 
 export default function Activity() {

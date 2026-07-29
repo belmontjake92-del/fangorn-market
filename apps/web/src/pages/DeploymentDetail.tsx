@@ -1,9 +1,16 @@
 import { Link, useParams } from "react-router-dom";
 import { useDeployment } from "../lib/api";
 import { Badge, Card, Loading, Mono, SectionTitle } from "../components/ui";
+import { agentKind } from "../lib/constants";
 import { pnlClass, shortHash, size, timeAgo, usd } from "../lib/format";
 
 const tx = (h: string) => `https://sepolia.arbiscan.io/tx/${h}`;
+
+const banner: Record<string, string> = {
+  trade: "Paper / simulated fills, settled on-chain against the oracle price. Not live capital.",
+  signal: "Non-trading agent — derives signals from the Grove and sells them via x402f. No positions.",
+  alert: "Non-trading agent — read-only market monitoring. Alerts appear in the activity feed.",
+};
 
 export default function DeploymentDetail() {
   const { id } = useParams();
@@ -24,11 +31,13 @@ export default function DeploymentDetail() {
             {d.market_symbol} · <Mono className="text-dim">{d.id.slice(0, 18)}…</Mono>
           </div>
         </div>
-        <Badge tone={d.status as never}>{d.status}</Badge>
+        <Badge tone={(agentKind[d.kind ?? "trade"]?.tone ?? "public") as never}>
+          {agentKind[d.kind ?? "trade"]?.label ?? "Trading"}
+        </Badge>
       </div>
 
       <div className="mt-3 rounded-lg border border-cyan/30 bg-cyan/5 px-3 py-2 text-xs text-cyan">
-        Paper / simulated fills, settled on-chain against the oracle price. Not live capital.
+        {banner[d.kind ?? "trade"] ?? banner.trade}
       </div>
 
       <div className="mt-6 grid gap-3 md:grid-cols-4">

@@ -17,6 +17,12 @@ export function openDb(path = ":memory:"): DatabaseSync {
   if (path !== ":memory:") db.exec("PRAGMA journal_mode = WAL;");
   db.exec("PRAGMA foreign_keys = ON;");
   db.exec(SCHEMA_SQL);
+  // Lightweight migration for DBs created before `kind` existed.
+  try {
+    db.exec("ALTER TABLE deployments ADD COLUMN kind TEXT NOT NULL DEFAULT 'trade'");
+  } catch {
+    /* column already exists */
+  }
   return db;
 }
 
@@ -143,20 +149,21 @@ export class Repo {
 
   // ───────────────────────── deployments & runtime ─────────────────────────
 
-  upsertDeployment(cfg: DeploymentConfig, status = "sandbox"): void {
+  upsertDeployment(cfg: DeploymentConfig, status = "sandbox", kind = "trade"): void {
     this.db
       .prepare(
         `INSERT INTO deployments
            (id, key, agent_name, owner, operator, opening_cash, max_position_notional,
-            daily_loss_limit, market_symbol, market_id, strategy_json, status, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            daily_loss_limit, market_symbol, market_id, strategy_json, status, kind, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT (id) DO UPDATE SET
            agent_name = excluded.agent_name,
            opening_cash = excluded.opening_cash,
            max_position_notional = excluded.max_position_notional,
            daily_loss_limit = excluded.daily_loss_limit,
            strategy_json = excluded.strategy_json,
-           status = excluded.status`,
+           status = excluded.status,
+           kind = excluded.kind`,
       )
       .run(
         cfg.id,
@@ -171,6 +178,7 @@ export class Repo {
         cfg.market.marketId,
         JSON.stringify(cfg.strategy),
         status,
+        kind,
         Math.floor(Date.now() / 1000),
       );
   }

@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { ConnectWallet } from "./ConnectWallet";
 
 const nav = [
@@ -16,7 +16,7 @@ const nav = [
 
 function Logo() {
   return (
-    <div className="flex items-center gap-2 px-2 py-1">
+    <Link to="/" className="flex items-center gap-2 rounded-lg px-2 py-1 transition-colors hover:bg-white/5" title="Back to Overview">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
         <path d="M12 21V9M12 9l-4-4M12 9l4-4M12 14l-3.2-3M12 14l3.2-3" stroke="#c6f24e" strokeWidth="1.6" strokeLinecap="round" />
         <circle cx="12" cy="7.5" r="1.6" fill="#c6f24e" />
@@ -24,7 +24,7 @@ function Logo() {
       <span className="text-[15px] font-semibold tracking-tight">
         Fangorn <span className="text-accent">Market</span>
       </span>
-    </div>
+    </Link>
   );
 }
 

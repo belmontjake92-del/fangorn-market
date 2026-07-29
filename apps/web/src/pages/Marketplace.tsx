@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
 import { useDeployment, useDeployments, type DeploymentRow } from "../lib/api";
 import { Badge, Card, Loading } from "../components/ui";
+import { agentKind } from "../lib/constants";
 import { pnlClass, size, usd } from "../lib/format";
 
+const roleLine: Record<string, string> = {
+  signal: "Derives signals from the Grove · sold via x402f",
+  alert: "Monitors the market · read-only alerts",
+};
+
 function AgentCard({ d }: { d: DeploymentRow }) {
-  const detail = useDeployment(d.id);
+  const isTrade = (d.kind ?? "trade") === "trade";
+  const detail = useDeployment(isTrade ? d.id : undefined);
   const pos = detail.data?.positions?.[0];
   const fills = detail.data?.fills ?? [];
   const strat = safeStrategy(d.strategy_json);
+  const k = agentKind[d.kind ?? "trade"] ?? { label: "Trading", tone: "public" };
 
   return (
     <Link to={`/agents/${d.id}`}>
@@ -15,25 +23,25 @@ function AgentCard({ d }: { d: DeploymentRow }) {
         <div className="flex items-start justify-between">
           <div>
             <div className="font-medium text-fg">{d.agent_name ?? d.key}</div>
-            <div className="mt-0.5 text-xs text-muted">
-              {d.market_symbol} · {strat}
-            </div>
+            <div className="mt-0.5 text-xs text-muted">{d.market_symbol} · {isTrade ? strat : k.label}</div>
           </div>
-          <Badge tone={d.status as never}>{d.status}</Badge>
+          <Badge tone={k.tone as never}>{k.label}</Badge>
         </div>
 
-        <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-          <Metric label="Position" value={pos ? `${size(pos.size)}` : "—"} />
-          <Metric
-            label="Unrealized"
-            value={pos ? usd(pos.unrealizedPnl) : "—"}
-            className={pos ? pnlClass(pos.unrealizedPnl) : ""}
-          />
-          <Metric label="Fills" value={fills.length || "0"} />
-        </div>
+        {isTrade ? (
+          <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+            <Metric label="Position" value={pos ? `${size(pos.size)}` : "—"} />
+            <Metric label="Unrealized" value={pos ? usd(pos.unrealizedPnl) : "—"} className={pos ? pnlClass(pos.unrealizedPnl) : ""} />
+            <Metric label="Fills" value={fills.length || "0"} />
+          </div>
+        ) : (
+          <div className="mt-4 rounded-lg border border-border-soft bg-surface-2 px-3 py-3 text-xs text-muted">
+            {roleLine[d.kind] ?? "Non-trading agent"}
+          </div>
+        )}
 
         <div className="mt-3 flex items-center justify-between border-t border-border-soft pt-3 text-[11px] text-dim">
-          <span>Max drawdown limit {usd(d.daily_loss_limit, 0)}/day</span>
+          <span>{isTrade ? `Daily loss cap ${usd(d.daily_loss_limit, 0)}` : "No capital · no risk gate"}</span>
           <span className="text-accent">View Agent →</span>
         </div>
       </Card>
