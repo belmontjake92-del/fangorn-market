@@ -155,6 +155,43 @@
         "IPriceOracle",
         "SettlementLedger"
       ]
+    },
+    "C:\\Users\\omysp\\Desktop\\fangorn\\fangorn-market\\contracts\\contracts\\DataRegistry.sol": {
+      "lastModificationDate": 1785312336956,
+      "contentHash": "2a1876e940abc4aea78ae1c508da431b",
+      "sourceName": "contracts/DataRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "DataRegistry"
+      ]
     }
   }
 }

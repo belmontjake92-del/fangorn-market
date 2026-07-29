@@ -37,7 +37,8 @@ import { unrealizedPnl } from "@fangorn-market/trading";
 import { ChainContext } from "../chain.js";
 import { DeterministicAgent, type PremiumBias } from "../agent.js";
 
-const NETWORK = "arbitrumSepolia";
+const NETWORK = process.env.NETWORK ?? "arbitrumSepolia";
+const DEPLOY_FILE = NETWORK === "robinhood" ? "robinhoodTestnet" : NETWORK;
 const SYMBOL = process.env.SEED_SYMBOL ?? "RH:ACME";
 const DEPLOYMENT_KEY = process.env.DEPLOYMENT_KEY ?? "sepolia-atlas-momentum";
 const USE_PREMIUM = process.env.USE_PREMIUM === "1";
@@ -98,8 +99,11 @@ async function buyPremiumBias(repo: Repo): Promise<PremiumBias | undefined> {
 async function main() {
   const key = process.env.FANGORN_PRIVATE_KEY as Hex | undefined;
   if (!key) throw new Error("FANGORN_PRIVATE_KEY is required in .env");
-  const dep = requireDeployment(NETWORK);
-  const rpcUrl = process.env.ARBITRUM_SEPOLIA_RPC_URL ?? "https://sepolia-rollup.arbitrum.io/rpc";
+  const dep = requireDeployment(DEPLOY_FILE);
+  const rpcUrl =
+    NETWORK === "robinhood"
+      ? (process.env.RH_RPC_URL ?? "https://rpc.testnet.chain.robinhood.com")
+      : (process.env.ARBITRUM_SEPOLIA_RPC_URL ?? "https://sepolia-rollup.arbitrum.io/rpc");
 
   const chain = new ChainContext({
     network: NETWORK,
@@ -111,7 +115,7 @@ async function main() {
 
   const dataDir = resolve(findRepoRoot(), ".data");
   mkdirSync(dataDir, { recursive: true });
-  const repo = Repo.open(resolve(dataDir, "sepolia.db"));
+  const repo = Repo.open(resolve(dataDir, `${DEPLOY_FILE}.db`));
 
   // 1. Mirror the published Grove dataset into the DB.
   const fangorn = await createGroveClient();
@@ -151,7 +155,7 @@ async function main() {
       limits: config.limits,
       markets: [market.marketId],
     });
-    console.log("Opened deployment on Arbitrum Sepolia.");
+    console.log(`Opened deployment on ${NETWORK}.`);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     if (!/DeploymentExists/.test(msg)) throw err;
@@ -186,12 +190,12 @@ async function main() {
   const pos = await chain.getPosition(config.id, market.marketId);
   const { price: mark } = await chain.getPrice(market.marketId);
   const equity = acct.cash + unrealizedPnl({ size: pos.size, entry: pos.entry }, mark);
-  console.log(`\n── Final state (Arbitrum Sepolia) ──`);
+  console.log(`\n── Final state (${NETWORK}, chain ${chain.chainId}) ──`);
   console.log(`  fills settled  : ${fills}`);
   console.log(`  position size  : ${unscaled(pos.size)} ${SYMBOL} @ ${formatUsd(pos.entry)}`);
   console.log(`  cash           : ${formatUsd(acct.cash)}`);
   console.log(`  equity         : ${formatUsd(equity)}`);
-  console.log(`\n  Tracer bullet complete on Robinhood Chain's stand-in (Arbitrum Sepolia).`);
+  console.log(`\n  Full loop complete on ${NETWORK} (chain ${chain.chainId}).`);
 }
 
 // USE_PREMIUM spawns Semaphore's proof worker, which keeps the loop alive; defer
