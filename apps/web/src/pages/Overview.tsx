@@ -17,10 +17,38 @@ export default function Overview() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="font-display text-3xl text-fg">Overview</h1>
-      <p className="mt-1 text-sm text-muted">
-        Live state of your agents, the Grove, and earnings — read from Arbitrum Sepolia.
-      </p>
+      {/* Hero */}
+      <div className="relative overflow-hidden rounded-2xl border border-border-soft bg-gradient-to-br from-[#0c0d0a] via-surface to-[#0b0d10] p-8">
+        <div className="pointer-events-none absolute inset-0 opacity-40">
+          <svg width="100%" height="100%" viewBox="0 0 600 240" preserveAspectRatio="xMidYMid slice" aria-hidden>
+            <g stroke="#c6f24e" strokeWidth="0.6" opacity="0.5" fill="none">
+              <path d="M40,200 C160,180 220,120 340,120 C440,120 500,70 560,60" />
+              <path d="M40,200 C160,210 240,180 360,180 C450,180 520,150 560,140" />
+              <path d="M340,120 L420,60 M340,120 L420,180" />
+            </g>
+            {[[40, 200], [200, 150], [340, 120], [420, 60], [420, 180], [560, 60]].map(([x, y], i) => (
+              <circle key={i} cx={x} cy={y} r={i === 2 ? 4 : 2.5} fill="#c6f24e" opacity={i === 2 ? 0.9 : 0.5} />
+            ))}
+          </svg>
+        </div>
+        <div className="relative max-w-2xl">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-black/30 px-3 py-1 font-mono text-[11px] text-muted">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" /> Built for Robinhood Chain · Powered by Fangorn
+          </span>
+          <h1 className="mt-4 font-display text-4xl leading-tight text-fg">
+            Build smarter agents. <span className="text-accent">Trade proven intelligence.</span>
+          </h1>
+          <p className="mt-3 text-sm text-muted">
+            Create, test, deploy, and monetize financial agents on shared, verifiable market intelligence — or discover
+            agents already optimized by the community.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link to="/marketplace" className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-bg hover:bg-accent-bright">Explore Agents</Link>
+            <Link to="/studio" className="rounded-full border border-border px-5 py-2 text-sm font-medium text-fg hover:border-accent/40 hover:text-accent">Open Agent Studio</Link>
+          </div>
+          <p className="mt-4 font-mono text-[11px] text-dim">All performance shown is simulated on Arbitrum Sepolia.</p>
+        </div>
+      </div>
 
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-5">
         <Stat label="Active Agents" value={deployments.data?.length ?? "—"} />
