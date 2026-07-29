@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import { Card, SectionTitle } from "../components/ui";
-import { NETWORK_LABEL } from "../lib/constants";
+import { NETWORK_LABEL, SETTLEMENT_MODE } from "../lib/constants";
 import { shortAddr } from "../lib/format";
 
 const policies = [
@@ -53,6 +53,7 @@ export default function Settings() {
           <Row k="Connected wallet" v={address ? shortAddr(address) : "Not connected"} />
           <Row k="Network" v={NETWORK_LABEL} />
           <Row k="Settlement asset" v="USDC" />
+          <Row k="Paid-data mode" v={`${SETTLEMENT_MODE.label} — ${SETTLEMENT_MODE.detail}`} />
         </Card>
       </div>
 

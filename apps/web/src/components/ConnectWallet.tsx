@@ -1,7 +1,7 @@
 import { useAccount, useConnect, useDisconnect, useChainId, useSwitchChain } from "wagmi";
 import { injected } from "wagmi/connectors";
-import { arbitrumSepolia } from "wagmi/chains";
 import { shortAddr } from "../lib/format";
+import { SUPPORTED_CHAIN_IDS, robinhoodTestnet } from "../lib/wagmi";
 
 export function ConnectWallet() {
   const { address, isConnected } = useAccount();
@@ -11,14 +11,14 @@ export function ConnectWallet() {
   const { switchChain } = useSwitchChain();
 
   if (isConnected && address) {
-    const wrongChain = chainId !== arbitrumSepolia.id;
+    const wrongChain = !SUPPORTED_CHAIN_IDS.includes(chainId);
     if (wrongChain) {
       return (
         <button
-          onClick={() => switchChain({ chainId: arbitrumSepolia.id })}
+          onClick={() => switchChain({ chainId: robinhoodTestnet.id as 46630 })}
           className="rounded-full border border-amber/50 bg-amber/10 px-3 py-1.5 text-xs font-medium text-amber hover:bg-amber/20"
         >
-          Switch to Arbitrum Sepolia
+          Switch to Robinhood Chain
         </button>
       );
     }
