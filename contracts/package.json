@@ -7,6 +7,7 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "deploy:sepolia": "hardhat run scripts/deploy.ts --network arbitrumSepolia",
+    "deploy:robinhood": "hardhat run scripts/deploy.ts --network robinhoodTestnet",
     "typecheck": "hardhat compile"
   },
   "devDependencies": {

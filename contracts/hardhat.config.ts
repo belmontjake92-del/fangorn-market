@@ -9,6 +9,8 @@ loadEnv({ path: resolve(__dirname, "../.env") });
 
 const RPC_URL =
   process.env.ARBITRUM_SEPOLIA_RPC_URL ?? "https://sepolia-rollup.arbitrum.io/rpc";
+const RH_RPC_URL = process.env.RH_RPC_URL ?? "https://rpc.testnet.chain.robinhood.com";
+const RH_CHAIN_ID = Number(process.env.RH_CHAIN_ID ?? 46630);
 const PRIVATE_KEY = process.env.FANGORN_PRIVATE_KEY;
 
 const config: HardhatUserConfig = {
@@ -26,6 +28,11 @@ const config: HardhatUserConfig = {
       chainId: 421614,
       // Only attach an account when a key is present so local/compile flows work
       // without secrets.
+      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
+    },
+    robinhoodTestnet: {
+      url: RH_RPC_URL,
+      chainId: RH_CHAIN_ID,
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
     },
   },

@@ -23,17 +23,23 @@ export const localhostChain = defineChain({
 });
 
 /**
- * Robinhood L2 — defined from env so the platform can switch to it once it
- * exists (RH_CHAIN_ID + RH_RPC_URL). NOTE: switching to RH Chain for real also
- * requires the Fangorn DataRegistry, x402f's SettlementRegistry, and USDC to be
- * deployed there — our contracts (PriceOracle/SettlementLedger) just redeploy.
+ * Robinhood Chain — the execution/settlement environment. Defaults to the public
+ * testnet (chain 46630, live since 2026-02-10); override RH_CHAIN_ID / RH_RPC_URL
+ * for mainnet (live since 2026-07-01) or a dedicated RPC.
+ *
+ * Our contracts (PriceOracle/SettlementLedger) + trading agent run here. NOTE:
+ * the Grove (Fangorn DataRegistry) and x402f (SettlementRegistry/worker/USDC)
+ * still live on Arbitrum Sepolia until Fangorn deploys them to RH Chain.
  */
+export const RH_TESTNET_ID = 46630;
+export const RH_TESTNET_RPC = "https://rpc.testnet.chain.robinhood.com";
+
 export function robinhoodChain(env: NodeJS.ProcessEnv = process.env): Chain {
   return defineChain({
-    id: Number(env.RH_CHAIN_ID ?? 0),
+    id: Number(env.RH_CHAIN_ID ?? RH_TESTNET_ID),
     name: "Robinhood Chain",
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-    rpcUrls: { default: { http: [env.RH_RPC_URL ?? ""] } },
+    rpcUrls: { default: { http: [env.RH_RPC_URL ?? RH_TESTNET_RPC] } },
   });
 }
 
@@ -100,6 +106,10 @@ export class ChainContext {
 
   get address(): Address {
     return this.account.address;
+  }
+
+  get chainId(): number {
+    return this.chain.id;
   }
 
   private async send(hash: Hex): Promise<Hex> {
