@@ -28,3 +28,21 @@ export {
   type SoldResource,
   type FetchedResource,
 } from "./flow.js";
+export {
+  generateWorkerKeypair,
+  encryptData,
+  decryptData,
+  sealDek,
+  unsealDek,
+  randomDek,
+  type WorkerKeypair,
+} from "./rh-crypto.js";
+export {
+  resolveRhX402Config,
+  resourceIdFromName as rhResourceIdFromName,
+  sellResourceRH,
+  payAndFetchRH,
+  type RhX402Config,
+  type RhSoldResource,
+  type RhFetched,
+} from "./rh.js";

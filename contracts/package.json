@@ -9,6 +9,7 @@
     "deploy:sepolia": "hardhat run scripts/deploy.ts --network arbitrumSepolia",
     "deploy:robinhood": "hardhat run scripts/deploy.ts --network robinhoodTestnet",
     "deploy:grove:robinhood": "hardhat run scripts/deploy-grove.ts --network robinhoodTestnet",
+    "deploy:x402:robinhood": "hardhat run scripts/deploy-x402.ts --network robinhoodTestnet",
     "typecheck": "hardhat compile"
   },
   "devDependencies": {

@@ -7,5 +7,8 @@
   "maxStaleness": "3600",
   "deployedAt": "2026-07-29T07:44:25.376Z",
   "dataRegistry": "0xc10534cbfaa6fb1edfe49b425faa108443763303",
-  "dataRegistryDeployedAt": "2026-07-29T08:06:34.235Z"
+  "dataRegistryDeployedAt": "2026-07-29T08:06:34.235Z",
+  "usdc": "0x674612b7429b4e0d461e531e100fcf48265c696f",
+  "paidAccessRegistry": "0xe0fd59b9f68ea00166a54a9d909fb3aba43ce155",
+  "x402DeployedAt": "2026-07-29T08:18:19.831Z"
 }

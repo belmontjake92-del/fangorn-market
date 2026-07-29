@@ -1,0 +1,23 @@
+{
+  "name": "@fangorn-market/rh-access-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Our own access worker for Robinhood-Chain paid data — stores ciphertext + sealed DEK, gates DEK release on on-chain settlement.",
+  "scripts": {
+    "start": "node --env-file=../../.env --import tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fangorn-market/shared": "workspace:*",
+    "@fangorn-market/x402pay": "workspace:*",
+    "express": "^4.21.2",
+    "viem": "^2.47.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3"
+  }
+}

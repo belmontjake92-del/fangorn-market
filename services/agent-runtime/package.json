@@ -18,6 +18,7 @@
     "run:signal-agent": "node --env-file=../../.env --import tsx src/scripts/run-signal-agent.ts",
     "run:alert-agent": "node --import tsx src/scripts/run-alert-agent.ts",
     "settle:demo": "node --env-file=../../.env --import tsx src/scripts/settle-demo.ts",
+    "x402:rh": "node --env-file=../../.env --import tsx src/scripts/x402-rh-demo.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

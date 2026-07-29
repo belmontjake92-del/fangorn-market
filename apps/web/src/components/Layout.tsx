@@ -58,7 +58,7 @@ export function Layout() {
         <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border-soft bg-bg/80 px-6 py-3 backdrop-blur">
           <div className="flex items-center gap-2 text-xs text-dim">
             <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-            <span className="font-mono">Arbitrum Sepolia</span>
+            <span className="font-mono">{import.meta.env.VITE_NETWORK_LABEL ?? "Arbitrum Sepolia"}</span>
           </div>
           <ConnectWallet />
         </header>

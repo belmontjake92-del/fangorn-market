@@ -192,6 +192,81 @@
       "artifacts": [
         "DataRegistry"
       ]
+    },
+    "C:\\Users\\omysp\\Desktop\\fangorn\\fangorn-market\\contracts\\contracts\\MockUSDC.sol": {
+      "lastModificationDate": 1785313029933,
+      "contentHash": "13f488449bf20f218cf9100376c2b462",
+      "sourceName": "contracts/MockUSDC.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "MockUSDC"
+      ]
+    },
+    "C:\\Users\\omysp\\Desktop\\fangorn\\fangorn-market\\contracts\\contracts\\PaidAccessRegistry.sol": {
+      "lastModificationDate": 1785313056731,
+      "contentHash": "c4873fa3971d6671e2b3bbe9ffc739bf",
+      "sourceName": "contracts/PaidAccessRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "IEip3009",
+        "PaidAccessRegistry"
+      ]
     }
   }
 }
