@@ -1,88 +1,53 @@
+![Fangorn Market](brand/twitter-banner.jpg)
+
 # Fangorn Market
 
-The open marketplace, creation studio, optimization layer, and shared
-intelligence graph ("The Grove") for autonomous financial agents - built on the
-[Fangorn protocol](https://github.com/fangorn-network/fangorn) and targeting
-Robinhood Chain (Arbitrum Sepolia today).
+A place to build and run trading agents that don't start from scratch.
 
-This is the **backend + real onchain integration** for the Fangorn Market
-prototype. It consumes the three upstream Fangorn repos as published npm
-packages:
+## What it is
 
-| Upstream repo | npm package | Role here |
-| --- | --- | --- |
-| `fangorn` | `@fangorn-network/sdk` | **The Grove** - versioned graph, IPFS + Arbitrum Sepolia (`commit`/`push`/`subscribe`/`inspectNamespace`) |
-| `x402f` | `@fangorn-network/fetch`, `@fangorn-network/facilitator` | Pay-gated / encrypted data access (x402 + Semaphore ZK) |
-| `agent` | `@fangorn-network/agent`, `-agent-tools`, `-agent-types` | Agent runtime - LangChain "toolbay" plugin system |
+Most bots launch into an empty database and have to figure out the market from nothing. Mine share one. Agents pull from a common pool of market intelligence, add what they learn, and can buy signals off each other. You can check an agent's performance before you use it, or build your own in the studio.
 
-> Read-only clones of the three repos live in `_repos/` (git-ignored) purely as
-> a source-of-truth reference. Nothing is built from them; all three are pulled
-> from npm.
+Trading is non-custodial. The agent suggests, you sign from your own wallet. I never hold your funds and I never set your price.
 
-## Layout
+Built for Robinhood Chain.
 
-```
-apps/
-  web/              # React/Next rebuild of the prototype (frontend)          [later]
-  api/              # Express API gateway + Grove indexer                      [Phase 1+]
-services/
-  agent-runtime/    # deterministic strategy scheduler over the toolbay        [Phase 1+]
-  facilitator/      # x402f facilitator (run/config)                           [Phase 2]
-packages/
-  grove/            # thin wrapper over @fangorn-network/sdk                    [Phase 0 ✓]
-  trading/          # simulated-fill engine + risk gate                        [Phase 1]
-  shared/           # shared types                                             [Phase 1]
-contracts/          # Solidity: PriceOracle + SettlementLedger + deploy        [Phase 1]
-db/                 # Postgres schema + migrations                             [Phase 1]
-```
+## How it uses Fangorn
 
-## Prerequisites
+Fangorn Market is an app built on top of Fangorn's protocols, not a fork of them.
 
-- Node.js >= 20.19 (24.x tested)
-- pnpm 10.4.0 - `corepack pnpm@10.4.0` or `npm i -g pnpm@10.4.0`
+- **The Grove.** The shared intelligence is Fangorn's Grove. I publish market observations and signals into a Grove namespace through the Fangorn SDK. Payloads live on IPFS, and every update commits a state root on-chain to a DataRegistry, so the provenance is verifiable instead of just my word for it. On Arbitrum this talks to Fangorn's own infrastructure. On Robinhood Chain I rewrote the DataRegistry contract in Solidity to match the SDK exactly, so the same SDK works there with no changes.
+- **x402f.** When one agent buys another's signal, that is Fangorn's x402f. The seller publishes the signal as an encrypted, pay-gated resource. The buyer pays USDC and only then gets the key to decrypt it, settled on-chain. On Arbitrum it runs x402f's Semaphore zero-knowledge layer so the buyer stays unlinkable. On Robinhood I built a direct-settlement version of the same flow.
+- **Agents.** The agent runtime follows the read, decide, act toolbay pattern from Fangorn's agent stack.
 
-## Setup
+Execution is deliberately separate and not part of Fangorn. Real trades route through an existing audited market (Uniswap on Arbitrum One), signed by the user's own wallet.
+
+## What is built here
+
+- Solidity contracts for settlement (PriceOracle, SettlementLedger), plus the Robinhood ports (a Solidity DataRegistry and a full direct-settlement x402 stack: USDC with EIP-3009, a paid-access contract, and an access worker with X25519 + AES-GCM encryption).
+- The deterministic agents (momentum, mean reversion, signal, alert) and their runtime.
+- The API, the sqlite indexer, and the backtest engine.
+- The React app: marketplace, studio with presets, the Grove view, leaderboards, the network switcher, dark and light themes, and the non-custodial Trade page.
+
+## Running it locally
+
+Prerequisites: Node 24 and pnpm 10.4.0.
 
 ```bash
 pnpm install
-cp .env.example .env   # Phase 0 needs nothing filled in
+pnpm -r test                 # unit tests
+pnpm check:sepolia           # read-only Grove connectivity check
 ```
 
-## Roadmap
-
-- **Phase 0 - Scaffold ✓** - monorepo, npm deps, read-only Arbitrum Sepolia
-  connectivity to the Fangorn DataRegistry.
-- **Phase 1 - Tracer bullet ✓ (built + locally proven; live run awaits secrets)**
-  - publisher commits a dataset to a Grove namespace → indexer surfaces it as a
-  Data Asset → deterministic agent decides and submits a simulated fill settled
-  onchain → position and PnL read back from chain. Contracts, trading engine,
-  data layer, Grove indexer, agent-runtime, and API are done and tested (43
-  unit tests + a full local integration run). See [GO-LIVE.md](GO-LIVE.md) to
-  run it on Arbitrum Sepolia.
-- **Phase 2 - Paid data** - x402f facilitator; agents pay for gated fields.
-- **Phase 3 - Breadth** - marketplace, agent detail, deploy wizard, dashboards
-  (React frontend).
-- **Phase 4 (deferred)** - LLM reasoning + Studio natural-language builder.
-
-## Verify locally (no secrets)
+Run the app (API serves the data, web is the frontend):
 
 ```bash
-pnpm install
-pnpm check:sepolia                                   # read-only Grove connectivity
-pnpm -r test                                         # 43 unit tests
-# full spine on a local Hardhat chain:
-cd contracts && npx hardhat node                     # terminal 1
-cd contracts && npx hardhat run scripts/deploy.ts --network localhost   # terminal 2
-pnpm --filter @fangorn-market/agent-runtime e2e:local
+pnpm --filter @fangorn-market/api start     # http://localhost:4000
+pnpm --filter @fangorn-market/web dev        # http://localhost:5173
 ```
 
-## Phase 0 - verify connectivity
+## Status
 
-Runs read-only with a throwaway key; no secrets required.
+Live at https://fangorn-market.fly.dev
 
-```bash
-pnpm check:sepolia
-```
-
-Expected: live `currentBlock` / `publisherCount` / `admin` reads from the
-DataRegistry at `0x9a3811b365a4aeea1626eaad185b273424ae5e48`.
+The intelligence layer (Grove, paid signals) and the settlement bookkeeping run on testnets right now. Non-custodial trade execution is real and runs against Uniswap on Arbitrum One. Agent performance shown in the app is a paper record, not live trading results.
