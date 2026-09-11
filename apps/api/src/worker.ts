@@ -156,7 +156,8 @@ export function startWorker(repoFor: RepoFor): void {
       }
     }
   };
-  run();
+  // Defer the first tick so the HTTP server is responsive before any DB work.
+  setTimeout(run, 4000);
   setInterval(run, intervalMs);
   console.log(`agent worker: paper loop running every ${Math.round(intervalMs / 1000)}s`);
 }
