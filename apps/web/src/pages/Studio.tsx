@@ -13,6 +13,109 @@ const contributionOptions = [
   "Prohibit training use",
 ];
 
+interface Preset {
+  id: string;
+  label: string;
+  kind: string;
+  blurb: string;
+  name: string;
+  market: string;
+  strategy: string;
+  lookback: number;
+  band: number;
+  clip: number;
+  maxPos: number;
+  dailyLoss: number;
+}
+
+/** Starter strategies - pick one to prefill the whole studio, then tweak. */
+const PRESETS: Preset[] = [
+  {
+    id: "momentum",
+    label: "Momentum",
+    kind: "threshold-momentum",
+    blurb: "Ride trends: long above a band around the moving average, short below, flat inside.",
+    name: "Atlas Momentum",
+    market: "ETH/USDC",
+    strategy: "Momentum: go long when price breaks above a band around the moving average, short below, flat inside the band.",
+    lookback: 5,
+    band: 0.005,
+    clip: 1,
+    maxPos: 5000,
+    dailyLoss: 200,
+  },
+  {
+    id: "mean-reversion",
+    label: "Mean Reversion",
+    kind: "mean-reversion",
+    blurb: "Fade extremes: buy dips below the band, sell rips above, expecting a return to the mean.",
+    name: "Reverting Fox",
+    market: "ARB/USDC",
+    strategy: "Mean reversion: buy when price stretches below the lower band, sell above the upper band; target the moving average.",
+    lookback: 20,
+    band: 0.012,
+    clip: 1,
+    maxPos: 4000,
+    dailyLoss: 150,
+  },
+  {
+    id: "breakout",
+    label: "Breakout",
+    kind: "breakout",
+    blurb: "Trade confirmed breakouts of a wider range; skip the chop in between.",
+    name: "Range Breaker",
+    market: "ETH/USDC",
+    strategy: "Breakout: enter on a decisive break of the N-bar high/low with a wider band to filter noise; exit on reversal.",
+    lookback: 30,
+    band: 0.02,
+    clip: 1.5,
+    maxPos: 6000,
+    dailyLoss: 250,
+  },
+  {
+    id: "trend-follow",
+    label: "Trend Follow",
+    kind: "trend-follow",
+    blurb: "Slow, patient trend riding with a long lookback and small clips.",
+    name: "Steady Ent",
+    market: "BTC/USDC",
+    strategy: "Trend following: use a long lookback to stay with the dominant trend; add slowly, cut quickly on reversal.",
+    lookback: 50,
+    band: 0.008,
+    clip: 0.5,
+    maxPos: 8000,
+    dailyLoss: 300,
+  },
+  {
+    id: "scalper",
+    label: "Fast Scalper",
+    kind: "scalp-momentum",
+    blurb: "Short lookback, tiny clips, tight loss cap - many small, quick decisions.",
+    name: "Quick Beam",
+    market: "ARB/USDC",
+    strategy: "Scalping: very short lookback with small clip sizes; take frequent small edges and cap daily loss tightly.",
+    lookback: 3,
+    band: 0.003,
+    clip: 0.5,
+    maxPos: 2000,
+    dailyLoss: 80,
+  },
+  {
+    id: "risk-off",
+    label: "Risk-Off Hedge",
+    kind: "defensive",
+    blurb: "Conservative sizing, wide band, quick to flatten - capital preservation first.",
+    name: "Warden",
+    market: "ETH/USDC",
+    strategy: "Defensive: only take high-conviction moves outside a wide band; small size, flatten fast when volatility spikes.",
+    lookback: 40,
+    band: 0.025,
+    clip: 0.5,
+    maxPos: 1500,
+    dailyLoss: 60,
+  },
+];
+
 function TextRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
@@ -25,14 +128,30 @@ function TextRow({ label, children }: { label: string; children: React.ReactNode
 const input = "w-full rounded-lg border border-border bg-surface-2 px-3 py-2 text-sm text-fg outline-none focus:border-accent/50";
 
 export default function Studio() {
-  const [name, setName] = useState("Atlas Momentum");
-  const [market, setMarket] = useState("RH:ACME");
+  const [presetId, setPresetId] = useState("momentum");
+  const [name, setName] = useState(PRESETS[0]!.name);
+  const [market, setMarket] = useState(PRESETS[0]!.market);
+  const [kind, setKind] = useState(PRESETS[0]!.kind);
+  const [strategy, setStrategy] = useState(PRESETS[0]!.strategy);
   const [lookback, setLookback] = useState(5);
   const [band, setBand] = useState(0.005);
   const [clip, setClip] = useState(1);
   const [maxPos, setMaxPos] = useState(5000);
   const [dailyLoss, setDailyLoss] = useState(200);
   const [contrib, setContrib] = useState<Record<string, boolean>>({ "Share derived signals only": true });
+
+  function applyPreset(p: Preset) {
+    setPresetId(p.id);
+    setName(p.name);
+    setMarket(p.market);
+    setKind(p.kind);
+    setStrategy(p.strategy);
+    setLookback(p.lookback);
+    setBand(p.band);
+    setClip(p.clip);
+    setMaxPos(p.maxPos);
+    setDailyLoss(p.dailyLoss);
+  }
 
   const bt = useBacktest({ seed: 7, ticks: 160, lookback, band, clip, vol: 0.02, openingCash: 1000 });
 
@@ -41,8 +160,32 @@ export default function Studio() {
       <h1 className="font-display text-3xl text-fg">Agent Studio</h1>
       <p className="mt-1 text-sm text-muted">
         Your first agent should not start from zero. Describe a strategy, connect intelligence, set risk, and preview a
-        backtest — before you deploy.
+        backtest - before you deploy.
       </p>
+
+      <div className="mt-6">
+        <div className="mb-2 text-[11px] uppercase tracking-wide text-dim">Start from a preset</div>
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {PRESETS.map((p) => {
+            const active = p.id === presetId;
+            return (
+              <button
+                key={p.id}
+                onClick={() => applyPreset(p)}
+                className={`rounded-xl border p-3 text-left transition-colors ${
+                  active ? "border-accent/60 bg-accent/5" : "border-border bg-surface hover:border-accent/40"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="text-sm font-medium text-fg">{p.label}</div>
+                  <Badge tone="neutral">{p.kind}</Badge>
+                </div>
+                <div className="mt-1 text-[11px] leading-relaxed text-dim">{p.blurb}</div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-6">
@@ -53,13 +196,14 @@ export default function Studio() {
             <TextRow label="Strategy">
               <textarea
                 className={`${input} h-20 resize-none`}
-                defaultValue="Momentum on tokenized equity: go long above a band around the moving average, short below, flat inside. Simulated fills settled on-chain."
+                value={strategy}
+                onChange={(e) => setStrategy(e.target.value)}
               />
             </TextRow>
           </Card>
 
           <Card className="space-y-4 p-4">
-            <SectionTitle right={<Badge tone="neutral">threshold-momentum</Badge>}>2 · Strategy</SectionTitle>
+            <SectionTitle right={<Badge tone="neutral">{kind}</Badge>}>2 · Strategy</SectionTitle>
             <div className="grid grid-cols-3 gap-3">
               <Num label="Lookback" value={lookback} set={setLookback} step={1} />
               <Num label="Band" value={band} set={setBand} step={0.001} />

@@ -1,13 +1,14 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
-import { api, useDeployments, type DeploymentDetail, type DeploymentRow } from "../lib/api";
+import { api, useCatalogDeploys, useDeployments, type DeploymentDetail, type DeploymentRow } from "../lib/api";
 import { Sparkline } from "../components/Sparkline";
 import { CATALOG, CATEGORIES, RISK_LEVELS, type AgentState, type CatalogAgent } from "../lib/catalog";
-import { NETWORK_LABEL } from "../lib/constants";
+import { useNetwork, useNetworkMeta, withNet } from "../lib/prefs";
 import { toNum } from "../lib/format";
 
 interface MarketAgent {
+  id: string;
   href: string;
   name: string;
   builder: string;
@@ -35,10 +36,10 @@ const stateStyle: Record<AgentState, string> = {
 };
 
 function catalogToAgent(c: CatalogAgent): MarketAgent {
-  return { ...c, href: "/studio", deploys: c.deploys, rating: c.rating, onchain: false };
+  return { ...c, id: c.id, href: "/studio", deploys: c.deploys, rating: c.rating, onchain: false };
 }
 
-function realToAgent(d: DeploymentRow, detail?: DeploymentDetail): MarketAgent {
+function realToAgent(d: DeploymentRow, netLabel: string, detail?: DeploymentDetail): MarketAgent {
   const kind = d.kind ?? "trade";
   const category = kind === "alert" ? "Risk Monitoring" : kind === "signal" ? "Market Research" : "Portfolio Management";
   const fills = detail?.fills ?? [];
@@ -51,17 +52,18 @@ function realToAgent(d: DeploymentRow, detail?: DeploymentDetail): MarketAgent {
         ? "Sells derived signals"
         : "Read-only monitoring";
   return {
+    id: `onchain:${d.id}`,
     href: `/agents/${d.id}`,
     name: d.agent_name ?? d.key,
     builder: "You · on-chain",
     version: "live",
     category,
     risk: kind === "trade" ? "Medium" : "Read-only",
-    drawdown: "—",
+    drawdown: "-",
     state: "live",
     verified: true,
     perf,
-    period: `${fills.length} fills · ${NETWORK_LABEL}`,
+    period: `${fills.length} fills · ${netLabel}`,
     price: kind === "signal" ? "0.001 USDC / read" : "Free",
     deploys: null,
     rating: null,
@@ -69,7 +71,7 @@ function realToAgent(d: DeploymentRow, detail?: DeploymentDetail): MarketAgent {
       kind === "signal"
         ? "Derives a confidence signal from The Grove and sells it via x402f."
         : kind === "alert"
-          ? "Watches the market and raises alerts. Read-only — never trades."
+          ? "Watches the market and raises alerts. Read-only - never trades."
           : "Deterministic momentum agent settling simulated fills on-chain.",
     accent: kind === "signal" ? "#d6a84a" : kind === "alert" ? "#9a8fd4" : "#6fa8c9",
     spark,
@@ -81,12 +83,11 @@ function Stars({ n }: { n: number }) {
   return <span className="text-amber">{"★".repeat(Math.round(n))}<span className="text-faint">{"★".repeat(5 - Math.round(n))}</span></span>;
 }
 
-function AgentCard({ a }: { a: MarketAgent }) {
+function AgentCard({ a, extra }: { a: MarketAgent; extra: number }) {
+  const totalDeploys = a.deploys != null ? a.deploys + extra : null;
   return (
-    <Link
-      to={a.href}
-      className="group flex flex-col rounded-xl border border-border-soft bg-surface p-4 transition-all hover:border-accent/30 hover:bg-surface-2"
-    >
+    <div className="group flex flex-col rounded-xl border border-border-soft bg-surface p-4 transition-all hover:border-accent/30 hover:bg-surface-2">
+      <Link to={a.href} className="flex flex-1 flex-col">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2.5">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: `${a.accent}1a` }}>
@@ -121,16 +122,22 @@ function AgentCard({ a }: { a: MarketAgent }) {
         <Chip>Risk: {a.risk}</Chip>
         <Chip>DD {a.drawdown}</Chip>
       </div>
+      </Link>
 
       <div className="mt-3 flex items-center justify-between border-t border-border-soft pt-3">
         <span className="text-sm font-semibold text-fg">{a.price}</span>
         <div className="flex items-center gap-3 text-[11px] text-dim">
-          {a.deploys != null && <span className="font-mono">{a.deploys.toLocaleString()} deploys</span>}
+          {totalDeploys != null && <span className="font-mono">{totalDeploys.toLocaleString()} deploys</span>}
           {a.rating != null && <Stars n={a.rating} />}
-          <span className="text-accent group-hover:underline">View →</span>
+          <Link
+            to={`/deploy?agent=${encodeURIComponent(a.id)}&name=${encodeURIComponent(a.name)}`}
+            className="font-medium text-accent hover:underline"
+          >
+            Deploy →
+          </Link>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -139,11 +146,14 @@ const Chip = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function Marketplace() {
+  const net = useNetwork();
+  const netLabel = useNetworkMeta().label;
+  const deployCounts = useCatalogDeploys();
   const deployments = useDeployments();
   const details = useQueries({
     queries: (deployments.data ?? [])
       .filter((d) => (d.kind ?? "trade") === "trade")
-      .map((d) => ({ queryKey: ["deployment", d.id], queryFn: () => api<DeploymentDetail>(`/api/deployments/${d.id}`) })),
+      .map((d) => ({ queryKey: ["deployment", net, d.id], queryFn: () => api<DeploymentDetail>(withNet(`/api/deployments/${d.id}`, net)) })),
   });
 
   const [cat, setCat] = useState<string | null>(null);
@@ -153,9 +163,9 @@ export default function Marketplace() {
 
   const agents = useMemo<MarketAgent[]>(() => {
     const detailMap = new Map(details.map((q) => [q.data?.deployment.id, q.data]).filter(([k]) => k) as [string, DeploymentDetail][]);
-    const real = (deployments.data ?? []).map((d) => realToAgent(d, detailMap.get(d.id)));
+    const real = (deployments.data ?? []).map((d) => realToAgent(d, netLabel, detailMap.get(d.id)));
     return [...real, ...CATALOG.map(catalogToAgent)];
-  }, [deployments.data, details]);
+  }, [deployments.data, details, netLabel]);
 
   const filtered = agents
     .filter((a) => (cat ? a.category === cat : true))
@@ -164,7 +174,7 @@ export default function Marketplace() {
     .sort((x, y) => {
       if (x.onchain !== y.onchain) return x.onchain ? -1 : 1; // real on-chain first
       if (sort === "rating") return (y.rating ?? 0) - (x.rating ?? 0);
-      if (sort === "drawdown") return parseFloat(x.drawdown.replace(/[−%—]/g, "") || "0") - parseFloat(y.drawdown.replace(/[−%—]/g, "") || "0");
+      if (sort === "drawdown") return parseFloat(x.drawdown.replace(/[−%-]/g, "") || "0") - parseFloat(y.drawdown.replace(/[−%-]/g, "") || "0");
       return (y.deploys ?? 9e9) - (x.deploys ?? 9e9);
     });
 
@@ -207,10 +217,10 @@ export default function Marketplace() {
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {filtered.map((a) => (
-              <AgentCard key={a.href + a.name} a={a} />
+              <AgentCard key={a.href + a.name} a={a} extra={deployCounts.data?.[a.id] ?? 0} />
             ))}
           </div>
-          <p className="mt-6 text-center text-[11px] text-dim">Catalog performance is simulated mock data. On-chain agents show live {NETWORK_LABEL} data.</p>
+          <p className="mt-6 text-center text-[11px] text-dim">Catalog performance is simulated mock data. On-chain agents show live {netLabel} data.</p>
         </div>
       </div>
     </div>

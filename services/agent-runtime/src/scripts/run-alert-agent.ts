@@ -1,7 +1,7 @@
 /**
- * Alert / monitoring agent — a NON-TRADING, read-only agent. Watches Grove
+ * Alert / monitoring agent - a NON-TRADING, read-only agent. Watches Grove
  * observations and raises alerts (abnormal moves, new highs/lows, stale data)
- * into the activity feed. No capital, no secrets — pure DB read.
+ * into the activity feed. No capital, no secrets - pure DB read.
  *
  * Run: pnpm --filter @fangorn-market/agent-runtime run:alert-agent
  */
@@ -42,7 +42,7 @@ function main() {
   });
   const alerts = agent.run();
 
-  console.log(`${AGENT_NAME}: scanned ${SYMBOL} — ${alerts.length} alert(s) raised.`);
+  console.log(`${AGENT_NAME}: scanned ${SYMBOL} - ${alerts.length} alert(s) raised.`);
   for (const a of alerts) console.log(`  [${a.level}] ${a.message}`);
   if (alerts.length === 0) console.log("  (nothing abnormal right now)");
 }

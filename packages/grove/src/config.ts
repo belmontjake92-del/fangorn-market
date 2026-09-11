@@ -14,7 +14,7 @@ const robinhoodTestnet = defineChain({
  *
  * Default: Arbitrum Sepolia + Fangorn's deployed DataRegistry. With
  * `NETWORK=robinhood`, target Robinhood Chain + OUR DataRegistry
- * (`DATA_REGISTRY_ADDRESS`) — The Grove running natively on Robinhood Chain.
+ * (`DATA_REGISTRY_ADDRESS`) - The Grove running natively on Robinhood Chain.
  * IPFS storage (Pinata) is chain-agnostic, so only the on-chain anchor moves.
  */
 export function resolveConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {

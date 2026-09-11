@@ -16,7 +16,7 @@ interface IEip3009 {
 }
 
 /// @title PaidAccessRegistry
-/// @notice The Robinhood-Chain-native settlement rail for paid, encrypted data —
+/// @notice The Robinhood-Chain-native settlement rail for paid, encrypted data -
 ///         a pragmatic stand-in for x402f's Stylus SettlementRegistry. A seller
 ///         registers a priced resource; a buyer's EIP-3009 USDC authorization is
 ///         relayed through `pay`, which pays the owner directly and records the

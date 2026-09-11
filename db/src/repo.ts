@@ -274,6 +274,30 @@ export class Repo {
     }));
   }
 
+  // ─────────────────────── catalog deploy tally ────────────────────────────
+
+  /** Real deploy counts per catalog agent id (id → count). */
+  catalogDeploys(): Record<string, number> {
+    const rows = this.db.prepare(`SELECT agent_id, count FROM catalog_deploys`).all() as Record<string, unknown>[];
+    const out: Record<string, number> = {};
+    for (const r of rows) out[String(r.agent_id)] = Number(r.count);
+    return out;
+  }
+
+  /** Increment (creating if needed) an agent's real deploy count; returns the new total. */
+  incrementCatalogDeploy(agentId: string): number {
+    this.db
+      .prepare(
+        `INSERT INTO catalog_deploys (agent_id, count) VALUES (?, 1)
+         ON CONFLICT (agent_id) DO UPDATE SET count = count + 1`,
+      )
+      .run(agentId);
+    const row = this.db.prepare(`SELECT count FROM catalog_deploys WHERE agent_id = ?`).get(agentId) as
+      | { count: number }
+      | undefined;
+    return row ? Number(row.count) : 0;
+  }
+
   // ─────────────────────── premium resources & earnings ────────────────────
 
   upsertResource(r: PremiumResource): void {

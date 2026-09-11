@@ -1,4 +1,4 @@
-# Phase 1 — Go Live (Arbitrum Sepolia)
+# Phase 1 - Go Live (Arbitrum Sepolia)
 
 Everything below is built and locally proven. These steps run the **real** tracer
 bullet on-chain once your secrets are in place. Nothing here needs code changes.
@@ -33,7 +33,7 @@ pnpm --filter @fangorn-market/agent-runtime seed:grove
 ```
 
 Creates the `market-prices` namespace and commits 40 price observations to
-IPFS + the DataRegistry. Prints the commit CID — that namespace is now a live
+IPFS + the DataRegistry. Prints the commit CID - that namespace is now a live
 Data Asset.
 
 ## 3. Run the tracer bullet
@@ -44,7 +44,7 @@ pnpm --filter @fangorn-market/agent-runtime go-live
 
 Backfills the Grove dataset into the DB, opens a deployment on the
 SettlementLedger, relays each Grove price to the on-chain PriceOracle, and lets
-the deterministic agent settle simulated fills — then prints the final
+the deterministic agent settle simulated fills - then prints the final
 position/PnL read back from chain.
 
 ## 4. Serve it

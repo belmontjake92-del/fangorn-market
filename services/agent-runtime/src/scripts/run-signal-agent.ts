@@ -1,5 +1,5 @@
 /**
- * Signal-publisher agent — a NON-TRADING agent that produces intelligence.
+ * Signal-publisher agent - a NON-TRADING agent that produces intelligence.
  * Reads Grove observations, derives a confidence signal, and publishes it as a
  * paid x402f resource that trading agents consume. Needs ETH (gas) + Pinata.
  *

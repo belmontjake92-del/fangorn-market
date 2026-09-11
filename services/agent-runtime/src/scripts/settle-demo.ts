@@ -1,8 +1,8 @@
 /**
  * Settlement demo on any live network (default: Robinhood Chain testnet).
  *
- * Runs the pure settlement layer — deterministic agent settling simulated fills
- * against our PriceOracle + SettlementLedger — with a synthetic price feed, so
+ * Runs the pure settlement layer - deterministic agent settling simulated fills
+ * against our PriceOracle + SettlementLedger - with a synthetic price feed, so
  * it needs NO Grove/x402f (those still live on Arbitrum Sepolia). This is the
  * execution/settlement layer running on Robinhood Chain.
  *
@@ -46,7 +46,7 @@ async function main() {
   const key = process.env.FANGORN_PRIVATE_KEY as Hex | undefined;
   if (!key) throw new Error("FANGORN_PRIVATE_KEY required in .env");
   const dep = loadDeployment(DEPLOY_FILE);
-  if (!dep) throw new Error(`No deployments/${DEPLOY_FILE}.json — run deploy:robinhood first.`);
+  if (!dep) throw new Error(`No deployments/${DEPLOY_FILE}.json - run deploy:robinhood first.`);
 
   const chain = new ChainContext({ network: NETWORK, rpcUrl: rpcFor(NETWORK), privateKey: key, oracle: dep.priceOracle, ledger: dep.settlementLedger });
   const dataDir = resolve(findRepoRoot(), ".data");
@@ -76,7 +76,7 @@ async function main() {
     console.log(`Opened deployment on ${NETWORK}.`);
   } catch (err) {
     if (!/DeploymentExists/.test(err instanceof Error ? err.message : String(err))) throw err;
-    console.log("Deployment already open — reusing.");
+    console.log("Deployment already open - reusing.");
   }
   repo.upsertDeployment(config, "live");
 

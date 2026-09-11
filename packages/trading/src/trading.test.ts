@@ -43,7 +43,7 @@ describe("SyntheticPriceFeed", () => {
   });
 });
 
-describe("applyFill — parity with SettlementLedger", () => {
+describe("applyFill - parity with SettlementLedger", () => {
   const flat: Position = { size: 0n, entry: 0n };
 
   it("opens a long at the fill price, no realized PnL", () => {
@@ -90,7 +90,7 @@ describe("applyFill — parity with SettlementLedger", () => {
   });
 });
 
-describe("checkFill — risk gate", () => {
+describe("checkFill - risk gate", () => {
   const flat: Position = { size: 0n, entry: 0n };
 
   it("passes a clean fill", () => {

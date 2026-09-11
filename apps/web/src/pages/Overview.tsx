@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import { useAccount } from "wagmi";
 import { useActivity, useDataAssets, useDeployments, useEarnings, useResources } from "../lib/api";
 import { Badge, Card, Loading, SectionTitle, Stat } from "../components/ui";
-import { NETWORK_LABEL, PLATFORM_OWNER, agentKind, kindLabel } from "../lib/constants";
+import { PLATFORM_OWNER, agentKind, kindLabel } from "../lib/constants";
+import { useNetworkMeta } from "../lib/prefs";
 import { timeAgo, usdcMicro } from "../lib/format";
 
 export default function Overview() {
   const { address } = useAccount();
+  const NETWORK_LABEL = useNetworkMeta().label;
   const deployments = useDeployments();
   const assets = useDataAssets();
   const resources = useResources();
@@ -39,7 +41,7 @@ export default function Overview() {
             Build smarter agents. <span className="text-accent">Trade proven intelligence.</span>
           </h1>
           <p className="mt-3 text-sm text-muted">
-            Create, test, deploy, and monetize financial agents on shared, verifiable market intelligence — or discover
+            Create, test, deploy, and monetize financial agents on shared, verifiable market intelligence - or discover
             agents already optimized by the community.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
@@ -54,7 +56,7 @@ export default function Overview() {
       <p className="mt-8 max-w-3xl text-sm leading-relaxed text-muted">
         <span className="text-fg">Fangorn Market</span> is an open marketplace, creation studio, and shared intelligence
         network for autonomous financial agents. Agents observe markets, contribute structured intelligence to{" "}
-        <span className="text-accent">The Grove</span>, and buy each other's signals — so every new agent starts from
+        <span className="text-accent">The Grove</span>, and buy each other's signals - so every new agent starts from
         everything the network has already learned, not an empty database.
       </p>
 
@@ -67,7 +69,7 @@ export default function Overview() {
         />
         <FeatureCard
           title="Build from The Grove"
-          body="Your first agent should not start from zero. Compose a strategy, connect living datasets, and backtest — no empty database."
+          body="Your first agent should not start from zero. Compose a strategy, connect living datasets, and backtest - no empty database."
           cta="Open Agent Studio"
           to="/studio"
         />
@@ -90,7 +92,7 @@ export default function Overview() {
       {/* Trust strip */}
       <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-border-soft py-3 text-[11px] text-dim">
         {[
-          "2nd place — Arbitrum Open House NYC Buildathon",
+          "2nd place - Arbitrum Open House NYC Buildathon",
           "Versioned data provenance",
           "Programmable data access",
           "Built for Robinhood Chain",
@@ -110,13 +112,13 @@ export default function Overview() {
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
-        <Stat label="Active Agents" value={deployments.data?.length ?? "—"} />
-        <Stat label="Data Assets" value={assets.data?.length ?? "—"} />
-        <Stat label="Grove Records" value={observationCount || "—"} />
-        <Stat label="Monetized Signals" value={resources.data?.length ?? "—"} />
+        <Stat label="Active Agents" value={deployments.data?.length ?? "-"} />
+        <Stat label="Data Assets" value={assets.data?.length ?? "-"} />
+        <Stat label="Grove Records" value={observationCount || "-"} />
+        <Stat label="Monetized Signals" value={resources.data?.length ?? "-"} />
         <Stat
           label="Earnings"
-          value={earnings.data ? usdcMicro(earnings.data.grossUsdcBaseUnits) : "—"}
+          value={earnings.data ? usdcMicro(earnings.data.grossUsdcBaseUnits) : "-"}
           sub={earnings.data ? `${earnings.data.purchases} purchase(s)` : undefined}
           accent
         />

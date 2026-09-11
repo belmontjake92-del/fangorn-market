@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "x402f paid/encrypted data — seller (encrypt + createResource) and buyer (pay + decrypt) helpers, ported from the x402f reference.",
+  "description": "x402f paid/encrypted data - seller (encrypt + createResource) and buyer (pay + decrypt) helpers, ported from the x402f reference.",
   "main": "src/index.ts",
   "exports": {
     ".": "./src/index.ts"

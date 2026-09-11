@@ -1,5 +1,5 @@
 import { Card, SectionTitle } from "../components/ui";
-import { NETWORK_LABEL } from "../lib/constants";
+import { useNetworkMeta } from "../lib/prefs";
 
 const levels = [
   { n: 1, name: "Unverified", desc: "No checks performed." },
@@ -14,6 +14,7 @@ const quality = ["Freshness", "Completeness", "Consistency", "Provenance", "Sche
 const claimRules = ["Time period", "Result type", "Benchmark", "Fees", "Slippage", "Drawdown", "Asset universe", "Version", "Data period"];
 
 export default function Trust() {
+  const NETWORK_LABEL = useNetworkMeta().label;
   return (
     <div className="mx-auto max-w-4xl">
       <h1 className="font-display text-3xl text-fg">Trust Center</h1>

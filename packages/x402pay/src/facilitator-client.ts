@@ -24,7 +24,7 @@ async function postExtra(baseUrl: string, path: string, extra: object): Promise<
   return body;
 }
 
-// The registry's AlreadyRegistered custom error (selector) — register() bundles
+// The registry's AlreadyRegistered custom error (selector) - register() bundles
 // the ERC-3009 payment atomically, so a revert here means no re-charge. On a
 // repeat buy by the same identity this is expected; treat it as success and let
 // the caller proceed to settle/decrypt against the existing registration.

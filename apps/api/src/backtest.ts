@@ -55,7 +55,7 @@ export function parseBacktestParams(q: Record<string, unknown>): BacktestParams 
 
 /**
  * Deterministic backtest over a synthetic price series using the exact same
- * position math the contract settles with — so a backtest and a live run of the
+ * position math the contract settles with - so a backtest and a live run of the
  * same seed agree. Pure; no chain.
  */
 export function runBacktest(params: BacktestParams): BacktestResult {

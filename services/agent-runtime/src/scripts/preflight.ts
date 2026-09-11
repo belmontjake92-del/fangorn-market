@@ -1,5 +1,5 @@
 /**
- * Preflight — verify the environment is ready for the live run without printing
+ * Preflight - verify the environment is ready for the live run without printing
  * any secrets: RPC is on Arbitrum Sepolia, the wallet has gas, and the Pinata
  * JWT authenticates.
  *
@@ -16,8 +16,8 @@ async function checkPinata(jwt: string): Promise<string> {
   const res = await fetch("https://api.pinata.cloud/data/testAuthentication", {
     headers: { Authorization: `Bearer ${jwt}` },
   });
-  if (res.ok) return "OK — JWT authenticates";
-  return `FAIL — HTTP ${res.status} (check PINATA_JWT)`;
+  if (res.ok) return "OK - JWT authenticates";
+  return `FAIL - HTTP ${res.status} (check PINATA_JWT)`;
 }
 
 async function main() {
@@ -25,7 +25,7 @@ async function main() {
   const problems: string[] = [];
   const cfg = resolveConfig();
 
-  console.log("Fangorn Market — preflight\n");
+  console.log("Fangorn Market - preflight\n");
   console.log(`  RPC              : ${cfg.rpcUrl.replace(/\/v2\/.*/, "/v2/***")}`);
 
   // 1. Chain reachable and correct.
@@ -59,7 +59,7 @@ async function main() {
       console.log(`  balance          : ${formatEther(bal)} ETH ${funded ? "✓" : "✗ (needs Arbitrum Sepolia ETH)"}`);
       if (!funded) {
         ok = false;
-        problems.push("Wallet has 0 ETH on Arbitrum Sepolia — fund it before deploying.");
+        problems.push("Wallet has 0 ETH on Arbitrum Sepolia - fund it before deploying.");
       }
     } catch (e) {
       problems.push(`Could not read balance: ${e instanceof Error ? e.message : String(e)}`);

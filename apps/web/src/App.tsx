@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import Overview from "./pages/Overview";
 import Marketplace from "./pages/Marketplace";
+import Trade from "./pages/Trade";
 import DeploymentDetail from "./pages/DeploymentDetail";
 import Grove from "./pages/Grove";
 import Earnings from "./pages/Earnings";
@@ -19,6 +20,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Overview />} />
         <Route path="marketplace" element={<Marketplace />} />
+        <Route path="trade" element={<Trade />} />
         <Route path="agents/:id" element={<DeploymentDetail />} />
         <Route path="studio" element={<Studio />} />
         <Route path="lab" element={<AgentLab />} />

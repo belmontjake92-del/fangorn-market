@@ -58,7 +58,7 @@ export interface FetchedResource {
  * Buyer: pay for and decrypt a resource. Registers (idempotent) + settles the
  * first time; on a repeat access the settle is skipped (the nullifier is
  * already used) and it decrypts directly. The buyer's main wallet never appears
- * in the settlement — the stealth address does.
+ * in the settlement - the stealth address does.
  */
 export async function payAndFetch(opts: {
   config: X402Config;

@@ -1,7 +1,7 @@
 /**
  * x402-on-Robinhood-Chain demo. Mints MockUSDC to a buyer, the seller publishes
  * an encrypted premium signal (our access worker + PaidAccessRegistry on RH),
- * and the buyer pays USDC + decrypts it — all on Robinhood Chain (chain 46630).
+ * and the buyer pays USDC + decrypts it - all on Robinhood Chain (chain 46630).
  * No Arbitrum, no Fangorn-hosted worker.
  *
  * Prereqs: deploy:x402:robinhood done, rh-access-worker running (RH_PAID_REGISTRY
@@ -33,9 +33,9 @@ async function main() {
   if (!ownerKey || !buyerKey) throw new Error("FANGORN_PRIVATE_KEY and BUYER_PRIVATE_KEY required in .env");
 
   const depFile = resolve(findRepoRoot(), "deployments", "robinhoodTestnet.json");
-  if (!existsSync(depFile)) throw new Error("deployments/robinhoodTestnet.json missing — run deploy:x402:robinhood");
+  if (!existsSync(depFile)) throw new Error("deployments/robinhoodTestnet.json missing - run deploy:x402:robinhood");
   const dep = JSON.parse(readFileSync(depFile, "utf8")) as { usdc?: Address; paidAccessRegistry?: Address };
-  if (!dep.usdc || !dep.paidAccessRegistry) throw new Error("usdc/paidAccessRegistry not in deployment — run deploy:x402:robinhood");
+  if (!dep.usdc || !dep.paidAccessRegistry) throw new Error("usdc/paidAccessRegistry not in deployment - run deploy:x402:robinhood");
 
   const chain = robinhoodChain();
   const owner = privateKeyToAccount(ownerKey);
@@ -65,7 +65,7 @@ async function main() {
     symbol: SYMBOL,
     bias: "long",
     confidence: 0.82,
-    note: "Premium signal — encrypted + settled natively on Robinhood Chain.",
+    note: "Premium signal - encrypted + settled natively on Robinhood Chain.",
     issuedAt: new Date().toISOString(),
   };
   const name = `rh-signal-${SYMBOL}-${Date.now()}`;
@@ -85,7 +85,7 @@ async function main() {
     repo.addActivity({ ts: now, kind: "access-payment", message: `Agent paid ${Number(PRICE) / 1e6} USDC on Robinhood Chain for "${name}" and decrypted it` });
   }
 
-  console.log(`${result.paidNow ? "Paid + decrypted" : "Already settled — decrypted"} ✓ on Robinhood Chain`);
+  console.log(`${result.paidNow ? "Paid + decrypted" : "Already settled - decrypted"} ✓ on Robinhood Chain`);
   console.log(`\n── Decrypted premium signal ──`);
   console.log(result.text);
   console.log(`\n  x402 paid/encrypted data is live on Robinhood Chain. (marketId ${marketId(SYMBOL).slice(0, 10)}…)`);

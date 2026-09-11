@@ -8,8 +8,8 @@ const tx = (h: string) => `https://sepolia.arbiscan.io/tx/${h}`;
 
 const banner: Record<string, string> = {
   trade: "Paper / simulated fills, settled on-chain against the oracle price. Not live capital.",
-  signal: "Non-trading agent — derives signals from the Grove and sells them via x402f. No positions.",
-  alert: "Non-trading agent — read-only market monitoring. Alerts appear in the activity feed.",
+  signal: "Non-trading agent - derives signals from the Grove and sells them via x402f. No positions.",
+  alert: "Non-trading agent - read-only market monitoring. Alerts appear in the activity feed.",
 };
 
 export default function DeploymentDetail() {

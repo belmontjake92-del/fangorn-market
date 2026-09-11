@@ -6,7 +6,7 @@ import { marketId as toMarketId } from "./units.js";
  *
  * A price dataset is one Fangorn namespace whose vertices are price
  * observations tagged with {@link PRICE_OBSERVATION_SCHEMA}. Each observation's
- * `price` is the 1e6-scaled integer serialized as a decimal string — dag-cbor
+ * `price` is the 1e6-scaled integer serialized as a decimal string - dag-cbor
  * round-trips strings exactly, sidestepping float precision and bigint codec
  * limits.
  */
@@ -20,7 +20,7 @@ export function groveNamespace(env: NodeJS.ProcessEnv = process.env): string {
 }
 
 export interface PriceObservationPayload {
-  /** bytes32 market id (keccak of the symbol) — the key the contracts use. */
+  /** bytes32 market id (keccak of the symbol) - the key the contracts use. */
   marketId: Hex;
   /** Human ticker, e.g. "RH:ACME". */
   symbol: string;

@@ -151,7 +151,7 @@ export async function buildSettleProof(params: {
     if (group.members.map(String).includes(target)) break;
     if (attempt === maxAttempts - 1) {
       throw new Error(
-        "identity commitment not in group after register — the register tx may have reverted (check the /verify response and USDC EIP-3009 support)",
+        "identity commitment not in group after register - the register tx may have reverted (check the /verify response and USDC EIP-3009 support)",
       );
     }
     await new Promise((r) => setTimeout(r, intervalMs));

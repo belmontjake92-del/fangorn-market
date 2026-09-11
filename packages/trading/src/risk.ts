@@ -28,7 +28,7 @@ export interface RiskDecision {
 /**
  * Pre-trade risk gate mirroring the on-chain checks in
  * `SettlementLedger.submitFill`. Running this before sending a tx lets the agent
- * skip fills the contract would revert — saving gas and surfacing a clean reason
+ * skip fills the contract would revert - saving gas and surfacing a clean reason
  * for the activity feed. The contract remains the source of truth.
  */
 export function checkFill(

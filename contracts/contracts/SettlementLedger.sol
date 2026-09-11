@@ -12,7 +12,7 @@ interface IPriceOracle {
 ///         "simulated fills, onchain settlement" model. An agent decides to buy or
 ///         sell; the fill is accepted at the current {PriceOracle} price and the
 ///         resulting position, entry, realized/unrealized PnL and cash are recorded
-///         onchain and read back by the app. No ERC-20 moves — balances are notional
+///         onchain and read back by the app. No ERC-20 moves - balances are notional
 ///         USDC-6 integers. Real token settlement can layer on in a later phase.
 ///
 /// @dev Fixed point:
@@ -153,7 +153,7 @@ contract SettlementLedger is Ownable {
     }
 
     /// @notice Pause/unpause a single deployment. Owner (platform) or the
-    ///         deployment's owner may call — this is the per-agent emergency stop.
+    ///         deployment's owner may call - this is the per-agent emergency stop.
     function setPaused(bytes32 id, bool paused) external {
         _requireOwnerOrDeploymentOwner(id);
         _accounts[id].paused = paused;

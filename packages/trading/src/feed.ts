@@ -20,7 +20,7 @@ export interface SyntheticConfig {
   driftPerStep?: number;
   /** Log-volatility per step (e.g. 0.01). Default 0.01. */
   volPerStep?: number;
-  /** PRNG seed — same seed ⇒ same series. Default 1. */
+  /** PRNG seed - same seed ⇒ same series. Default 1. */
   seed?: number;
   /** Timestamp of the first point (unix seconds). Default now. */
   startTs?: number;
@@ -32,7 +32,7 @@ export interface SyntheticConfig {
 
 /**
  * A geometric random walk: `p_{t+1} = p_t * exp(drift + vol * z)`, z ~ N(0,1).
- * Deterministic given the seed — the backbone of the reproducible tracer bullet.
+ * Deterministic given the seed - the backbone of the reproducible tracer bullet.
  */
 export class SyntheticPriceFeed implements PriceFeed {
   private readonly rng: () => number;

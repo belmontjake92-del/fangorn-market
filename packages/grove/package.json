@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Thin wrapper over @fangorn-network/sdk — Grove (The Grove) publish/subscribe/read helpers.",
+  "description": "Thin wrapper over @fangorn-network/sdk - Grove (The Grove) publish/subscribe/read helpers.",
   "main": "src/index.ts",
   "exports": {
     ".": "./src/index.ts"

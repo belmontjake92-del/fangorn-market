@@ -165,7 +165,7 @@ describe("SettlementLedger", () => {
   it("enforces the max-position-notional cap", async () => {
     const { oracle, fill } = await deploy({ maxPositionNotional: usd(150), dailyLossLimit: 0n });
     await oracle.write.setPrice([M, price(100)]);
-    await fill(ID, M, size(1)); // $100 notional — ok
+    await fill(ID, M, size(1)); // $100 notional - ok
     await expectRevert(fill(ID, M, size(1)), "PositionLimitExceeded"); // would be $200
   });
 

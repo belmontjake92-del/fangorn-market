@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Fangorn Market frontend — React app over the backend API, with wallet connect on Arbitrum Sepolia.",
+  "description": "Fangorn Market frontend - React app over the backend API, with wallet connect on Arbitrum Sepolia.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

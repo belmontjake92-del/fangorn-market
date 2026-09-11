@@ -3,13 +3,13 @@ import type { Repo } from "@fangorn-market/db";
 import { deriveSignal, type DerivedSignal } from "@fangorn-market/trading";
 import { sellResource, type X402Config } from "@fangorn-market/x402pay";
 
-/** Schema for the confidence signal — same shape a trading agent consumes. */
+/** Schema for the confidence signal - same shape a trading agent consumes. */
 export const PREMIUM_SIGNAL_SCHEMA = "fangorn-market.premium-confidence/v1";
 
 /**
  * A non-trading agent that PRODUCES intelligence. It reads price observations
  * from The Grove, derives a directional confidence signal, and publishes it as a
- * paid, encrypted x402f resource — which trading agents then pay to consume.
+ * paid, encrypted x402f resource - which trading agents then pay to consume.
  * This closes the flywheel: agents don't just trade, they sell intelligence to
  * each other.
  */

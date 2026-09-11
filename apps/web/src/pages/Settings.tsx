@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import { Card, SectionTitle } from "../components/ui";
-import { NETWORK_LABEL, SETTLEMENT_MODE } from "../lib/constants";
+import { useNetworkMeta } from "../lib/prefs";
 import { shortAddr } from "../lib/format";
 
 const policies = [
@@ -26,6 +26,7 @@ function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
 
 export default function Settings() {
   const { address } = useAccount();
+  const meta = useNetworkMeta();
   const [state, setState] = useState<Record<string, boolean>>(Object.fromEntries(policies.map((p) => [p.k, p.on])));
   const [stopped, setStopped] = useState(false);
 
@@ -51,9 +52,9 @@ export default function Settings() {
         <SectionTitle>Account</SectionTitle>
         <Card className="space-y-2 p-4 text-sm">
           <Row k="Connected wallet" v={address ? shortAddr(address) : "Not connected"} />
-          <Row k="Network" v={NETWORK_LABEL} />
+          <Row k="Network" v={meta.label} />
           <Row k="Settlement asset" v="USDC" />
-          <Row k="Paid-data mode" v={`${SETTLEMENT_MODE.label} — ${SETTLEMENT_MODE.detail}`} />
+          <Row k="Paid-data mode" v={`${meta.mode.label} - ${meta.mode.detail}`} />
         </Card>
       </div>
 
@@ -62,13 +63,13 @@ export default function Settings() {
         <Card className="flex items-center justify-between p-4">
           <div>
             <div className="text-sm font-medium text-fg">Pause All Agents</div>
-            <div className="text-[11px] text-dim">Global stop — no agent can submit new actions.</div>
+            <div className="text-[11px] text-dim">Global stop - no agent can submit new actions.</div>
           </div>
           <button
             onClick={() => setStopped((s) => !s)}
             className={`rounded-lg px-4 py-2 text-xs font-semibold ${stopped ? "bg-loss/20 text-loss" : "border border-loss/50 text-loss hover:bg-loss/10"}`}
           >
-            {stopped ? "Paused — Resume" : "Pause All"}
+            {stopped ? "Paused - Resume" : "Pause All"}
           </button>
         </Card>
       </div>

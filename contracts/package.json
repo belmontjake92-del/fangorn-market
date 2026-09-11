@@ -2,7 +2,7 @@
   "name": "@fangorn-market/contracts",
   "version": "0.0.0",
   "private": true,
-  "description": "Fangorn Market onchain settlement — PriceOracle + SettlementLedger (Arbitrum Sepolia).",
+  "description": "Fangorn Market onchain settlement - PriceOracle + SettlementLedger (Arbitrum Sepolia).",
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",

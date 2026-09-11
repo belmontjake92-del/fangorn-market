@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Our own access worker for Robinhood-Chain paid data — stores ciphertext + sealed DEK, gates DEK release on on-chain settlement.",
+  "description": "Our own access worker for Robinhood-Chain paid data - stores ciphertext + sealed DEK, gates DEK release on on-chain settlement.",
   "scripts": {
     "start": "node --env-file=../../.env --import tsx src/index.ts",
     "typecheck": "tsc --noEmit"

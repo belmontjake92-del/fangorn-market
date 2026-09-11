@@ -2,7 +2,7 @@
  * Local x402f facilitator launcher.
  *
  * The facilitator relays register/settle and pays gas, so its relayer key needs
- * testnet ETH — we reuse the funded main wallet (FANGORN_PRIVATE_KEY) as the
+ * testnet ETH - we reuse the funded main wallet (FANGORN_PRIVATE_KEY) as the
  * relayer. Maps our repo `.env` onto the names the facilitator expects, then
  * imports it (it auto-listens on :FACILITATOR_PORT).
  *

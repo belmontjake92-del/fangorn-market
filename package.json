@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Fangorn Market — open marketplace, studio, and intelligence graph for financial agents on Robinhood Chain, built on the Fangorn protocol.",
+  "description": "Fangorn Market - open marketplace, studio, and intelligence graph for financial agents on Robinhood Chain, built on the Fangorn protocol.",
   "engines": {
     "node": ">=20.19.0"
   },

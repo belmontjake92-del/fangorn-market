@@ -1,5 +1,5 @@
 /**
- * Phase 2 — seller side. Encrypt a premium signal, upload the ciphertext to the
+ * Phase 2 - seller side. Encrypt a premium signal, upload the ciphertext to the
  * access worker, and register it as a paid resource on the SettlementRegistry.
  * Records it as a monetized Data Asset in the DB. Needs only ETH (gas).
  *

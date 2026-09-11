@@ -1,10 +1,10 @@
 /**
- * Phase 1 local dry run — the full tracer-bullet spine on a local Hardhat node,
+ * Phase 1 local dry run - the full tracer-bullet spine on a local Hardhat node,
  * no secrets required. It stands in for the real Grove publish/indexer with a
  * LocalPriceService (oracle push + DB mirror), then runs a deterministic agent
  * that settles simulated fills on-chain and reads position/PnL back.
  *
- * Prereqs: a Hardhat node running and contracts deployed to it —
+ * Prereqs: a Hardhat node running and contracts deployed to it -
  *   (in contracts/) npx hardhat node            # terminal 1
  *   (in contracts/) npx hardhat run scripts/deploy.ts --network localhost
  * Then: pnpm --filter @fangorn-market/agent-runtime e2e:local
@@ -29,7 +29,7 @@ import { ChainContext } from "../chain.js";
 import { DeterministicAgent } from "../agent.js";
 import { LocalPriceService } from "../price-service.js";
 
-// Well-known Hardhat account #0 — a public test key, funded on the local node.
+// Well-known Hardhat account #0 - a public test key, funded on the local node.
 const HARDHAT_KEY = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80" as Hex;
 const TICKS = 40;
 
@@ -90,7 +90,7 @@ async function main() {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     if (!/DeploymentExists/.test(msg)) throw err;
-    console.log("Deployment already open on-chain — reusing.");
+    console.log("Deployment already open on-chain - reusing.");
   }
   repo.upsertDeployment(config);
   repo.addActivity({
@@ -147,7 +147,7 @@ async function main() {
   console.log(`  equity           : ${formatUsd(equity)}`);
   console.log(`  day realized PnL : ${formatUsd(acct.dayRealizedPnl)}`);
   console.log(`\n  DB mirror: ${repo.listObservations(market.symbol).length} observations, ${repo.listFills(config.id).length} fills, ${repo.listActivity().length} activity events.`);
-  console.log("\n  Spine OK — Grove-mirror → deterministic agent → on-chain settlement → read-back.");
+  console.log("\n  Spine OK - Grove-mirror → deterministic agent → on-chain settlement → read-back.");
 }
 
 main().catch((err) => {

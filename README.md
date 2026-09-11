@@ -1,7 +1,7 @@
 # Fangorn Market
 
 The open marketplace, creation studio, optimization layer, and shared
-intelligence graph ("The Grove") for autonomous financial agents — built on the
+intelligence graph ("The Grove") for autonomous financial agents - built on the
 [Fangorn protocol](https://github.com/fangorn-network/fangorn) and targeting
 Robinhood Chain (Arbitrum Sepolia today).
 
@@ -11,9 +11,9 @@ packages:
 
 | Upstream repo | npm package | Role here |
 | --- | --- | --- |
-| `fangorn` | `@fangorn-network/sdk` | **The Grove** — versioned graph, IPFS + Arbitrum Sepolia (`commit`/`push`/`subscribe`/`inspectNamespace`) |
+| `fangorn` | `@fangorn-network/sdk` | **The Grove** - versioned graph, IPFS + Arbitrum Sepolia (`commit`/`push`/`subscribe`/`inspectNamespace`) |
 | `x402f` | `@fangorn-network/fetch`, `@fangorn-network/facilitator` | Pay-gated / encrypted data access (x402 + Semaphore ZK) |
-| `agent` | `@fangorn-network/agent`, `-agent-tools`, `-agent-types` | Agent runtime — LangChain "toolbay" plugin system |
+| `agent` | `@fangorn-network/agent`, `-agent-tools`, `-agent-types` | Agent runtime - LangChain "toolbay" plugin system |
 
 > Read-only clones of the three repos live in `_repos/` (git-ignored) purely as
 > a source-of-truth reference. Nothing is built from them; all three are pulled
@@ -39,7 +39,7 @@ db/                 # Postgres schema + migrations                             [
 ## Prerequisites
 
 - Node.js >= 20.19 (24.x tested)
-- pnpm 10.4.0 — `corepack pnpm@10.4.0` or `npm i -g pnpm@10.4.0`
+- pnpm 10.4.0 - `corepack pnpm@10.4.0` or `npm i -g pnpm@10.4.0`
 
 ## Setup
 
@@ -50,19 +50,19 @@ cp .env.example .env   # Phase 0 needs nothing filled in
 
 ## Roadmap
 
-- **Phase 0 — Scaffold ✓** — monorepo, npm deps, read-only Arbitrum Sepolia
+- **Phase 0 - Scaffold ✓** - monorepo, npm deps, read-only Arbitrum Sepolia
   connectivity to the Fangorn DataRegistry.
-- **Phase 1 — Tracer bullet ✓ (built + locally proven; live run awaits secrets)**
-  — publisher commits a dataset to a Grove namespace → indexer surfaces it as a
+- **Phase 1 - Tracer bullet ✓ (built + locally proven; live run awaits secrets)**
+  - publisher commits a dataset to a Grove namespace → indexer surfaces it as a
   Data Asset → deterministic agent decides and submits a simulated fill settled
   onchain → position and PnL read back from chain. Contracts, trading engine,
   data layer, Grove indexer, agent-runtime, and API are done and tested (43
   unit tests + a full local integration run). See [GO-LIVE.md](GO-LIVE.md) to
   run it on Arbitrum Sepolia.
-- **Phase 2 — Paid data** — x402f facilitator; agents pay for gated fields.
-- **Phase 3 — Breadth** — marketplace, agent detail, deploy wizard, dashboards
+- **Phase 2 - Paid data** - x402f facilitator; agents pay for gated fields.
+- **Phase 3 - Breadth** - marketplace, agent detail, deploy wizard, dashboards
   (React frontend).
-- **Phase 4 (deferred)** — LLM reasoning + Studio natural-language builder.
+- **Phase 4 (deferred)** - LLM reasoning + Studio natural-language builder.
 
 ## Verify locally (no secrets)
 
@@ -76,7 +76,7 @@ cd contracts && npx hardhat run scripts/deploy.ts --network localhost   # termin
 pnpm --filter @fangorn-market/agent-runtime e2e:local
 ```
 
-## Phase 0 — verify connectivity
+## Phase 0 - verify connectivity
 
 Runs read-only with a throwaway key; no secrets required.
 

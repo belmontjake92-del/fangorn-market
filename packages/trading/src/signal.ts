@@ -1,5 +1,5 @@
 /**
- * Derive a directional intelligence signal from a price series — the output a
+ * Derive a directional intelligence signal from a price series - the output a
  * signal-publisher agent sells and a trading agent consumes. Deterministic:
  * same prices → same signal.
  */

@@ -1,5 +1,5 @@
 /**
- * Go-live step 1 — publish a synthetic price dataset to THE REAL GROVE on
+ * Go-live step 1 - publish a synthetic price dataset to THE REAL GROVE on
  * Arbitrum Sepolia (IPFS/Pinata + DataRegistry). Creates the namespace if
  * needed and commits N price observations as one CAR + commit + push.
  *

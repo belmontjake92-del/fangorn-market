@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" fill="none">
+  <!-- Fangorn Market - square profile avatar (800x800, safe for circular crop) -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0a0f0a"/>
+      <stop offset="1" stop-color="#060707"/>
+    </linearGradient>
+    <radialGradient id="g" cx="0.5" cy="0.42" r="0.5">
+      <stop offset="0" stop-color="#c6f24e" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#c6f24e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <rect width="800" height="800" fill="url(#g)"/>
+  <g transform="translate(104,136) scale(8)">
+    <g stroke="#c6f24e" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M32 58V27"/><path d="M32 45 L21 35"/><path d="M32 45 L42 36"/>
+      <path d="M32 30 L25 21"/><path d="M32 30 L43 19"/><path d="M43 19 L52 9"/>
+    </g>
+    <g fill="#c6f24e">
+      <circle cx="21" cy="35" r="2.6"/><circle cx="42" cy="36" r="2.6"/>
+      <circle cx="25" cy="21" r="2.6"/><circle cx="43" cy="19" r="2.6"/>
+    </g>
+    <circle cx="52" cy="9" r="4" fill="#d4f76a"/>
+  </g>
+</svg>

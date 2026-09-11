@@ -10,7 +10,7 @@ export interface Alert {
 
 /**
  * A non-trading, read-only monitoring agent. It watches Grove observations for a
- * market and raises alerts — abnormal moves, new highs/lows, stale data — into
+ * market and raises alerts - abnormal moves, new highs/lows, stale data - into
  * the activity feed. No capital, no risk gate: it observes and reports.
  */
 export class AlertAgent {

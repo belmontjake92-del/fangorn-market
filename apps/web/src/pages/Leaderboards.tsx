@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import { api, useDeployments, type DeploymentDetail } from "../lib/api";
 import { Badge, Card, Loading, SectionTitle } from "../components/ui";
-import { NETWORK_LABEL } from "../lib/constants";
+import { useNetwork, useNetworkMeta, withNet } from "../lib/prefs";
 import { pnlClass, usd } from "../lib/format";
 
 interface Row {
@@ -23,13 +23,15 @@ const boards = {
 } as const;
 
 export default function Leaderboards() {
+  const net = useNetwork();
+  const netLabel = useNetworkMeta().label;
   const deployments = useDeployments();
   const [board, setBoard] = useState<keyof typeof boards>("realized");
 
   const details = useQueries({
     queries: (deployments.data ?? []).map((d) => ({
-      queryKey: ["deployment", d.id],
-      queryFn: () => api<DeploymentDetail>(`/api/deployments/${d.id}`),
+      queryKey: ["deployment", net, d.id],
+      queryFn: () => api<DeploymentDetail>(withNet(`/api/deployments/${d.id}`, net)),
     })),
   });
 
@@ -84,7 +86,7 @@ export default function Leaderboards() {
         ))}
       </div>
 
-      <SectionTitle right={<span className="text-[11px] text-dim">Simulated fills · {NETWORK_LABEL}</span>}>
+      <SectionTitle right={<span className="text-[11px] text-dim">Simulated fills · {netLabel}</span>}>
         <span className="mt-4 block">{b.label}</span>
       </SectionTitle>
 

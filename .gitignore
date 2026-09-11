@@ -7,10 +7,18 @@ dist/
 lib/
 *.tsbuildinfo
 
-# env & secrets — NEVER commit
+# hardhat build artifacts (regenerated)
+contracts/artifacts/
+contracts/cache/
+
+# env & secrets: NEVER commit
 .env
 .env.*
 !.env.example
+
+# local CLI binaries (not part of the app)
+flybin/
+ghbin/
 
 # fangorn local pointer state
 .fangorn/

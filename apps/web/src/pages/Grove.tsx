@@ -12,7 +12,7 @@ export default function Grove() {
     <div className="mx-auto max-w-6xl">
       <h1 className="font-display text-3xl text-fg">The Grove</h1>
       <p className="mt-1 text-sm text-muted">
-        A connected graph of market intelligence — independently owned datasets, versioned and verifiable on Fangorn.
+        A connected graph of market intelligence - independently owned datasets, versioned and verifiable on Fangorn.
       </p>
 
       <div className="mt-8">
@@ -30,7 +30,7 @@ export default function Grove() {
                 <div className="mt-1 font-mono text-[11px] text-dim">{a.namespace}</div>
                 <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
                   <KV k="Records" v={a.recordCount} />
-                  <KV k="Latest seq" v={a.latestSeq ?? "—"} />
+                  <KV k="Latest seq" v={a.latestSeq ?? "-"} />
                   <KV k="Publisher" v={shortAddr(a.publisher)} />
                   <KV k="Updated" v={timeAgo(a.lastUpdated)} />
                 </div>

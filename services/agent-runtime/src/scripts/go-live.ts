@@ -1,5 +1,5 @@
 /**
- * Go-live step 2 — the full Phase 1 tracer bullet on Arbitrum Sepolia.
+ * Go-live step 2 - the full Phase 1 tracer bullet on Arbitrum Sepolia.
  *
  *   Grove (real, published by seed:grove)
  *     → indexer backfill mirrors observations into the DB
@@ -159,7 +159,7 @@ async function main() {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     if (!/DeploymentExists/.test(msg)) throw err;
-    console.log("Deployment already open — reusing.");
+    console.log("Deployment already open - reusing.");
   }
   repo.upsertDeployment(config, "live");
 

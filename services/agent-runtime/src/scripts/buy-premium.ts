@@ -1,5 +1,5 @@
 /**
- * Phase 2 tracer bullet — buyer side. The agent pays for and decrypts the
+ * Phase 2 tracer bullet - buyer side. The agent pays for and decrypts the
  * premium signal via x402f (register → settle → unlock DEK → decrypt), using a
  * stealth identity so its wallet never appears in the settlement. Records the
  * purchase (earnings) in the DB.
@@ -93,7 +93,7 @@ async function main() {
   }
 
   const earnings = repo.earningsForOwner(resource.owner);
-  console.log(`${result.paidNow ? "Paid + decrypted" : "Already settled — decrypted"} ✓`);
+  console.log(`${result.paidNow ? "Paid + decrypted" : "Already settled - decrypted"} ✓`);
   console.log(`  stealth addr : ${result.stealthAddress} (buyer wallet stayed unlinked)`);
   console.log(`  nullifier    : ${result.nullifier}`);
   console.log(`\n── Decrypted premium signal ──`);

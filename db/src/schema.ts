@@ -129,4 +129,11 @@ CREATE TABLE IF NOT EXISTS purchases (
   ts            INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_purchases_owner ON purchases (owner, id);
+
+-- Real deploy tally per catalog agent. Seeded low in the UI; this counts actual
+-- user deploys on top, so the number grows only when someone really deploys.
+CREATE TABLE IF NOT EXISTS catalog_deploys (
+  agent_id TEXT PRIMARY KEY,
+  count    INTEGER NOT NULL DEFAULT 0
+);
 `;

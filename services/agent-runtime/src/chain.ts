@@ -23,7 +23,7 @@ export const localhostChain = defineChain({
 });
 
 /**
- * Robinhood Chain — the execution/settlement environment. Defaults to the public
+ * Robinhood Chain - the execution/settlement environment. Defaults to the public
  * testnet (chain 46630, live since 2026-02-10); override RH_CHAIN_ID / RH_RPC_URL
  * for mainnet (live since 2026-07-01) or a dedicated RPC.
  *
@@ -81,7 +81,7 @@ export interface AccountState {
 
 /**
  * Typed viem client over PriceOracle + SettlementLedger. The same code drives
- * the local Hardhat dry run and Arbitrum Sepolia — only the config differs.
+ * the local Hardhat dry run and Arbitrum Sepolia - only the config differs.
  */
 export class ChainContext {
   readonly publicClient: PublicClient;
@@ -186,7 +186,7 @@ export class ChainContext {
 
   /**
    * Settle a fill and return the authoritative result decoded from the
-   * FillSettled event — the agent's source of truth for its new position/cash,
+   * FillSettled event - the agent's source of truth for its new position/cash,
    * so it never depends on a possibly-stale read-after-write of its own state.
    */
   async submitFill(id: Hex, marketId: Hex, sizeDelta: bigint): Promise<{ txHash: Hex; fill: FillEvent }> {

@@ -1,0 +1,31 @@
+# Dependencies & build output - reinstalled/rebuilt inside the image
+**/node_modules
+**/dist
+**/.turbo
+**/coverage
+
+# Reference clones (huge; not needed to run) and VCS
+_repos
+.git
+.github
+
+# Local flyctl binary (not part of the app)
+flybin
+flyctl.zip
+install-fly.ps1
+
+# Hardhat build artifacts
+contracts/cache
+contracts/artifacts
+
+# Local env & logs - never bake secrets into the image
+.env
+.env.*
+!.env.example
+*.log
+
+# Editor / OS cruft
+.DS_Store
+.vscode
+
+# NOTE: .data/*.db IS kept on purpose - the API serves that on-chain data.

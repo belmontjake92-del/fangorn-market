@@ -1,20 +1,42 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { Badge, Card } from "../components/ui";
+import { incrementCatalogDeploy } from "../lib/api";
 
 const steps = ["Environment", "Limits", "Review", "Confirm"];
 
 export default function DeployWizard() {
+  const [params] = useSearchParams();
+  const agentId = params.get("agent");
+  const agentName = params.get("name");
+  const qc = useQueryClient();
+
   const [step, setStep] = useState(0);
   const [env, setEnv] = useState("sandbox");
   const [maxCapital, setMaxCapital] = useState(1000);
   const [dailyLoss, setDailyLoss] = useState(200);
   const [approved, setApproved] = useState(false);
+  const [deployed, setDeployed] = useState<number | null>(null);
+
+  async function onDeploy() {
+    if (agentId) {
+      try {
+        const { count } = await incrementCatalogDeploy(agentId);
+        setDeployed(count);
+        qc.invalidateQueries({ queryKey: ["catalog-deploys"] });
+        return;
+      } catch {
+        /* fall through to a generic success even if the counter is unreachable */
+      }
+    }
+    setDeployed(0);
+  }
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Link to="/studio" className="text-xs text-dim hover:text-muted">← Studio</Link>
-      <h1 className="mt-2 font-display text-3xl text-fg">Deploy Agent</h1>
+      <Link to="/marketplace" className="text-xs text-dim hover:text-muted">← Marketplace</Link>
+      <h1 className="mt-2 font-display text-3xl text-fg">Deploy {agentName ?? "Agent"}</h1>
       <p className="mt-1 text-sm text-muted">A safe, explicit deployment. Sandbox by default; you approve every permission.</p>
 
       <div className="mt-6 flex items-center gap-2">
@@ -77,7 +99,7 @@ export default function DeployWizard() {
           </div>
         )}
 
-        {step === 3 && (
+        {step === 3 && deployed === null && (
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-fg">Confirm deployment</h3>
             <label className="flex items-start gap-2 text-sm text-muted">
@@ -86,13 +108,28 @@ export default function DeployWizard() {
             </label>
             <button
               disabled={!approved}
+              onClick={onDeploy}
               className="w-full rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-bg hover:bg-accent-bright disabled:opacity-40"
             >
-              Deploy to {env}
+              Deploy {agentName ?? "agent"} to {env}
             </button>
-            <p className="text-center text-[11px] text-dim">
-              In this prototype, deployments are opened by the platform operator via the SettlementLedger.
-            </p>
+            <p className="text-center text-[11px] text-dim">Sandbox and paper are safe. Your deploy is counted on the agent.</p>
+          </div>
+        )}
+
+        {deployed !== null && (
+          <div className="space-y-3 text-center">
+            <div className="text-3xl">✓</div>
+            <h3 className="text-sm font-semibold text-fg">{agentName ?? "Agent"} deployed to {env}</h3>
+            {deployed > 0 && (
+              <p className="text-xs text-muted">
+                This agent now has <span className="font-mono text-fg">{deployed.toLocaleString()}</span> real deploy
+                {deployed === 1 ? "" : "s"}.
+              </p>
+            )}
+            <Link to="/marketplace" className="inline-block rounded-lg bg-white/10 px-4 py-2 text-xs text-fg hover:bg-white/15">
+              Back to Marketplace →
+            </Link>
           </div>
         )}
 

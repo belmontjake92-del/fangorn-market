@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Fangorn Market design tokens — lifted from the prototype. */
+/* Fangorn Market design tokens - lifted from the prototype. */
 @theme {
   --color-bg: #050506;
   --color-surface: #0d0d0e;
@@ -9,10 +9,11 @@
   --color-border: #232326;
   --color-border-soft: #171719;
 
-  --color-fg: #f4f4f5;
-  --color-muted: #a1a1aa;
-  --color-dim: #71717a;
-  --color-faint: #52525b;
+  /* Text - brightened so secondary copy reads clearly, not dim gray. */
+  --color-fg: #fafafa;
+  --color-muted: #d8d8dc;
+  --color-dim: #a6a6ad;
+  --color-faint: #85858d;
 
   --color-accent: #c6f24e;
   --color-accent-bright: #d4f76a;
@@ -27,6 +28,35 @@
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --font-display: "Playfair Display", Georgia, serif;
+}
+
+/*
+ * Light theme - toggled via data-theme="light" on <html>.
+ * Accent flips to a deep green so existing `bg-accent`+`text-bg` buttons and
+ * `text-accent` labels keep strong contrast on a white background.
+ */
+:root[data-theme="light"] {
+  --color-bg: #fbfbfa;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4f4f5;
+  --color-elevated: #ffffff;
+  --color-border: #e2e2e5;
+  --color-border-soft: #ececee;
+
+  --color-fg: #18181b;
+  --color-muted: #3f3f46;
+  --color-dim: #52525b;
+  --color-faint: #71717a;
+
+  --color-accent: #3f6212;
+  --color-accent-bright: #4d7c0f;
+  --color-accent-dim: #65a30d;
+
+  --color-cyan: #2b6f96;
+  --color-violet: #6d5fc4;
+  --color-amber: #a16207;
+  --color-loss: #dc2626;
+  --color-gain: #15803d;
 }
 
 * {

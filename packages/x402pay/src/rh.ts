@@ -1,6 +1,6 @@
 // Robinhood-Chain-native paid data (pragmatic x402). Uses our PaidAccessRegistry
 // + MockUSDC + our own access worker, with the self-contained envelope crypto.
-// No Semaphore/facilitator — the buyer's address is settled directly (no ZK
+// No Semaphore/facilitator - the buyer's address is settled directly (no ZK
 // stealth privacy), but the paid-decrypt behavior is the same.
 import {
   keccak256,

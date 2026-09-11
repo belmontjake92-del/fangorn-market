@@ -2,7 +2,7 @@ import { keccak256, toBytes, type Hex } from "viem";
 
 /**
  * The whole system uses one 1e6 fixed-point scale for USDC amounts, prices
- * (quote-per-base), and position sizes — matching the on-chain contracts. Keep
+ * (quote-per-base), and position sizes - matching the on-chain contracts. Keep
  * every value as `bigint` at this scale; only convert to `number` for display.
  */
 export const SCALE = 1_000_000n;
@@ -18,7 +18,7 @@ export function unscaled(n: bigint): number {
   return Number(n) / SCALE_NUMBER;
 }
 
-// Semantic aliases — same scale, clearer call sites.
+// Semantic aliases - same scale, clearer call sites.
 export const usd = scaled;
 export const price = scaled;
 export const size = scaled;
@@ -31,7 +31,7 @@ export function formatUsd(n: bigint, fractionDigits = 2): string {
 }
 
 /**
- * Deterministic bytes32 market id from a ticker/symbol — the same value the
+ * Deterministic bytes32 market id from a ticker/symbol - the same value the
  * contracts and Grove observations key on. `marketId("RH:ACME")`.
  */
 export function marketId(symbol: string): Hex {

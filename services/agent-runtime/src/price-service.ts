@@ -14,7 +14,7 @@ export interface PricePush {
 
 /**
  * Local price service for the no-secrets dry run: push the price to the on-chain
- * oracle (settlement source of truth) and record it in the DB mirror directly —
+ * oracle (settlement source of truth) and record it in the DB mirror directly -
  * standing in for the Grove publish → indexer path that runs live in Phase 1.
  */
 export class LocalPriceService {

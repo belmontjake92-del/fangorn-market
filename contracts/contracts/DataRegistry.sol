@@ -2,7 +2,7 @@
 pragma solidity 0.8.28;
 
 /// @title DataRegistry
-/// @notice An EVM (Solidity) reimplementation of Fangorn's DataRegistry — The
+/// @notice An EVM (Solidity) reimplementation of Fangorn's DataRegistry - The
 ///         Grove's on-chain anchor. It matches the Fangorn SDK ABI exactly, so
 ///         the SDK can run against it unchanged. This lets The Grove operate on
 ///         Robinhood Chain (EVM) without the Stylus/Rust toolchain.

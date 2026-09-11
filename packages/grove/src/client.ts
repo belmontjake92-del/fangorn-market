@@ -33,7 +33,7 @@ export async function createGroveClient(opts?: {
 }
 
 /**
- * A read-only Grove client backed by a throwaway key — safe for querying the
+ * A read-only Grove client backed by a throwaway key - safe for querying the
  * registry and reading namespaces without touching any funded wallet.
  */
 export function createReadOnlyGroveClient(env: NodeJS.ProcessEnv = process.env) {

@@ -54,14 +54,14 @@ export default function AgentLab() {
 
         <div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <Stat label="Final equity" value={q.data ? dollars(q.data.metrics.finalEquity) : "—"} accent />
+            <Stat label="Final equity" value={q.data ? dollars(q.data.metrics.finalEquity) : "-"} accent />
             <Stat
               label="Return"
-              value={q.data ? pct(q.data.metrics.realizedReturnPct) : "—"}
+              value={q.data ? pct(q.data.metrics.realizedReturnPct) : "-"}
               sub={<span className={q.data && q.data.metrics.realizedReturnPct < 0 ? "text-loss" : "text-gain"}>simulated</span>}
             />
-            <Stat label="Max drawdown" value={q.data ? `−${q.data.metrics.maxDrawdownPct.toFixed(2)}%` : "—"} />
-            <Stat label="Fills" value={q.data?.metrics.fills ?? "—"} />
+            <Stat label="Max drawdown" value={q.data ? `−${q.data.metrics.maxDrawdownPct.toFixed(2)}%` : "-"} />
+            <Stat label="Fills" value={q.data?.metrics.fills ?? "-"} />
           </div>
 
           <Card className="mt-4 p-4">

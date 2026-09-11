@@ -111,7 +111,7 @@ export async function downloadAndDecrypt(params: {
   );
 
   if (params.expectedPlaintextHash && sha256Hex(plaintext) !== params.expectedPlaintextHash) {
-    throw new Error("plaintext hash mismatch — got the wrong data back");
+    throw new Error("plaintext hash mismatch - got the wrong data back");
   }
   return plaintext;
 }

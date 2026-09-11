@@ -38,7 +38,7 @@ export async function ensureRepo(fangorn: Fangorn, namespace: string): Promise<v
 
 /**
  * Publish a batch of price observations to a Grove namespace as vertices tagged
- * with the price-observation schema — one CAR upload + one commit + one push.
+ * with the price-observation schema - one CAR upload + one commit + one push.
  * Returns the settled commit CID.
  */
 export async function publishObservations(

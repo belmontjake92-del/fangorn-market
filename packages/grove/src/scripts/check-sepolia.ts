@@ -13,7 +13,7 @@ import { createReadOnlyGroveClient } from "../client.js";
 
 async function main() {
   const cfg = resolveConfig();
-  console.log("Fangorn Market — Phase 0 connectivity check\n");
+  console.log("Fangorn Market - Phase 0 connectivity check\n");
   console.log(`  chain            : ${cfg.chain.name} (id ${cfg.chain.id})`);
   console.log(`  rpc              : ${cfg.rpcUrl}`);
   console.log(`  data registry    : ${cfg.dataRegistryContractAddress}`);
@@ -36,11 +36,11 @@ async function main() {
   console.log(`    publisherCount   : ${publisherCount}`);
   console.log(`    registrationFee  : ${fee} wei`);
   console.log(`    admin            : ${admin}`);
-  console.log(`\n  OK — reachable in ${ms}ms. The Grove's on-chain root is live.`);
+  console.log(`\n  OK - reachable in ${ms}ms. The Grove's on-chain root is live.`);
 }
 
 main().catch((err) => {
-  console.error("\n  FAILED — connectivity check did not pass:\n");
+  console.error("\n  FAILED - connectivity check did not pass:\n");
   console.error(err);
   process.exit(1);
 });

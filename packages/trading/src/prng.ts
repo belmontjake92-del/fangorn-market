@@ -1,6 +1,6 @@
 /**
  * Deterministic PRNG so synthetic price series are fully reproducible from a
- * seed — identical runs, identical prices, identical PnL. Not for cryptography.
+ * seed - identical runs, identical prices, identical PnL. Not for cryptography.
  */
 export function mulberry32(seed: number): () => number {
   let a = seed >>> 0;

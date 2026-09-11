@@ -20,7 +20,7 @@ function sign(x: bigint): bigint {
 }
 
 /**
- * Pure position update — a faithful TS mirror of `SettlementLedger._applyFill`,
+ * Pure position update - a faithful TS mirror of `SettlementLedger._applyFill`,
  * so off-chain simulation, pre-trade risk checks and backtests agree exactly
  * with what the contract will record. All bigint division truncates toward zero,
  * matching Solidity.

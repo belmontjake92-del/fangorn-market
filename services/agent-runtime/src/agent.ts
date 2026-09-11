@@ -37,7 +37,7 @@ export interface TickResult {
  * The agent is authoritative about its OWN position, cash and daily PnL: it
  * seeds them once from chain in {@link init}, then advances them from each
  * fill's FillSettled event. It never re-reads its own just-written position via
- * RPC — that read-after-write dependency is non-deterministic under a
+ * RPC - that read-after-write dependency is non-deterministic under a
  * load-balanced provider (a replica can lag a block). Only external state it
  * doesn't write itself (emergency stop, pause) is read live each tick.
  */

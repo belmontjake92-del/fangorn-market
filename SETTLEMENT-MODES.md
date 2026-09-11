@@ -1,4 +1,4 @@
-# Two settlement modes — deployed on both chains
+# Two settlement modes - deployed on both chains
 
 Fangorn Market's paid/encrypted-data layer runs on **both** chains. Users choose
 by which network they operate on; the pay-to-decrypt behavior is identical, only
@@ -22,5 +22,5 @@ Both are live and verified end-to-end (a buyer paid USDC and decrypted on each).
 The wallet supports both chains; the app's **Settings → Paid-data mode** shows which is active.
 
 Full x402f stealth on Robinhood Chain is possible later (Stylus is enabled there,
-v3) — deploy the native Stylus `SettlementRegistry` or add a Solidity Semaphore
+v3) - deploy the native Stylus `SettlementRegistry` or add a Solidity Semaphore
 verifier. The direct mode is the pragmatic, RH-native default.

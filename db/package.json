@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "SQLite (node:sqlite) data layer — indexer mirror + marketplace tables, typed repository.",
+  "description": "SQLite (node:sqlite) data layer - indexer mirror + marketplace tables, typed repository.",
   "main": "src/index.ts",
   "exports": {
     ".": "./src/index.ts"
