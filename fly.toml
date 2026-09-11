@@ -8,15 +8,17 @@ primary_region = "iad"
 [env]
   PORT = "8080"
   NODE_ENV = "production"
+  # Run the always-on paper worker so agents keep trading around the clock.
+  AGENT_WORKER = "1"
+  WORKER_INTERVAL_MS = "180000"
 
 [http_service]
   internal_port = 8080
   force_https = true
-  # Scale to zero when idle to stay cheap during onboarding; set
-  # min_machines_running = 1 to remove cold starts once you have traffic.
-  auto_stop_machines = "stop"
+  # Keep one machine running at all times so the agent worker never sleeps.
+  auto_stop_machines = "off"
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
 
   [[http_service.checks]]
     interval = "15s"

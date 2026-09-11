@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { Repo } from "@fangorn-market/db";
 import { findRepoRoot } from "@fangorn-market/shared";
 import { createServer } from "./server.js";
+import { startWorker } from "./worker.js";
 
 const PORT = Number(process.env.PORT ?? 4000);
 const root = findRepoRoot();
@@ -39,4 +40,6 @@ app.listen(PORT, () => {
   console.log(`  arbitrum db:  ${DB_PATHS.arbitrum}`);
   console.log(`  robinhood db: ${DB_PATHS.robinhood}`);
   console.log(`  web dist:     ${existsSync(WEB_DIST) ? WEB_DIST : "(not built - dev mode)"}`);
+  // Always-on paper worker (opt-in via env so local dev stays quiet).
+  if (process.env.AGENT_WORKER === "1") startWorker(repoFor);
 });
