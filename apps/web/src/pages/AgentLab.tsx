@@ -60,7 +60,7 @@ export default function AgentLab() {
               value={q.data ? pct(q.data.metrics.realizedReturnPct) : "-"}
               sub={<span className={q.data && q.data.metrics.realizedReturnPct < 0 ? "text-loss" : "text-gain"}>simulated</span>}
             />
-            <Stat label="Max drawdown" value={q.data ? `−${q.data.metrics.maxDrawdownPct.toFixed(2)}%` : "-"} />
+            <Stat label="Max drawdown" value={q.data ? `-${q.data.metrics.maxDrawdownPct.toFixed(2)}%` : "-"} />
             <Stat label="Fills" value={q.data?.metrics.fills ?? "-"} />
           </div>
 

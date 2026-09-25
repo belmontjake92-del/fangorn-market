@@ -174,7 +174,7 @@ export default function Marketplace() {
     .sort((x, y) => {
       if (x.onchain !== y.onchain) return x.onchain ? -1 : 1; // real on-chain first
       if (sort === "rating") return (y.rating ?? 0) - (x.rating ?? 0);
-      if (sort === "drawdown") return parseFloat(x.drawdown.replace(/[−%-]/g, "") || "0") - parseFloat(y.drawdown.replace(/[−%-]/g, "") || "0");
+      if (sort === "drawdown") return parseFloat(x.drawdown.replace(/[-%-]/g, "") || "0") - parseFloat(y.drawdown.replace(/[-%-]/g, "") || "0");
       return (y.deploys ?? 9e9) - (x.deploys ?? 9e9);
     });
 

@@ -59,7 +59,4 @@
 
   <!-- tagline -->
   <text x="334" y="272" font-family="'IBM Plex Sans', 'Segoe UI', Arial, sans-serif" font-size="30" fill="#d8d8dc">Build smarter agents. Trade proven intelligence.</text>
-
-  <!-- meta strip -->
-  <text x="334" y="332" font-family="'IBM Plex Mono', 'Consolas', monospace" font-size="20" fill="#9aa08f" letter-spacing="0.5">Non-custodial spot execution  ·  The Grove  ·  Built for Robinhood Chain</text>
 </svg>

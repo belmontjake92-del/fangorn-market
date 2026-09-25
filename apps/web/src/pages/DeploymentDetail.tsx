@@ -3,8 +3,14 @@ import { useDeployment } from "../lib/api";
 import { Badge, Card, Loading, Mono, SectionTitle } from "../components/ui";
 import { agentKind } from "../lib/constants";
 import { pnlClass, shortHash, size, timeAgo, usd } from "../lib/format";
+import { useNetwork } from "../lib/prefs";
 
-const tx = (h: string) => `https://sepolia.arbiscan.io/tx/${h}`;
+// Explorer per chain. Paper fills have no transaction, so they get a badge instead.
+const EXPLORER: Record<string, string> = {
+  arbitrum: "https://sepolia.arbiscan.io/tx/",
+  robinhood: "https://explorer.testnet.chain.robinhood.com/tx/",
+};
+const isRealHash = (h: string) => /^0x[0-9a-fA-F]{64}$/.test(h);
 
 const banner: Record<string, string> = {
   trade: "Paper / simulated fills, settled on-chain against the oracle price. Not live capital.",
@@ -15,6 +21,7 @@ const banner: Record<string, string> = {
 export default function DeploymentDetail() {
   const { id } = useParams();
   const q = useDeployment(id);
+  const net = useNetwork();
   if (q.isLoading) return <Loading />;
   if (!q.data) return <div className="text-sm text-dim">Deployment not found.</div>;
   const { deployment: d, positions, fills } = q.data;
@@ -105,9 +112,13 @@ export default function DeploymentDetail() {
                   <Td right className={pnlClass(f.realizedPnl)}>{usd(f.realizedPnl)}</Td>
                   <Td right>{usd(f.cashAfter)}</Td>
                   <Td right>
-                    <a href={tx(f.txHash)} target="_blank" rel="noreferrer" className="font-mono text-xs text-cyan hover:underline">
-                      {shortHash(f.txHash, 4)}
-                    </a>
+                    {isRealHash(f.txHash) ? (
+                      <a href={`${EXPLORER[net] ?? EXPLORER.arbitrum}${f.txHash}`} target="_blank" rel="noreferrer" className="font-mono text-xs text-cyan hover:underline">
+                        {shortHash(f.txHash, 4)}
+                      </a>
+                    ) : (
+                      <span className="rounded-full border border-cyan/40 bg-cyan/10 px-2 py-0.5 text-[10px] font-medium text-cyan">paper</span>
+                    )}
                   </Td>
                 </tr>
               ))}

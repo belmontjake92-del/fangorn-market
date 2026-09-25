@@ -17,8 +17,8 @@ type Hex = `0x${string}`;
 const hex = (v: unknown): Hex => String(v) as Hex;
 const now = () => Math.floor(Date.now() / 1000);
 const fmt = (v: bigint) => (Number(v) / 1e6).toFixed(4);
-const randomTx = (): Hex =>
-  ("0x" + Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("")) as Hex;
+// Paper fills carry a sentinel instead of a fake transaction hash.
+const PAPER_TX = "paper" as Hex;
 
 // In-memory last price per network+market (reseeded from the DB on restart).
 const lastPrice = new Map<string, bigint>();
@@ -109,7 +109,7 @@ function tickNetwork(repo: Repo, network: string): void {
         newEntryPrice: res.newEntry,
         realizedPnl: res.realized,
         cashAfter,
-        txHash: randomTx(),
+        txHash: PAPER_TX,
         ts,
       });
       repo.upsertPosition({

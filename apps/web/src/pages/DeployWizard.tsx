@@ -91,7 +91,7 @@ export default function DeployWizard() {
             <Perm can>This agent can read Grove price observations</Perm>
             <Perm can>This agent can submit simulated fills within limits</Perm>
             <Perm can={false}>This agent cannot exceed {maxCapital} USDC exposure</Perm>
-            <Perm can={false}>This agent cannot trade after −{dailyLoss} USDC in a day</Perm>
+            <Perm can={false}>This agent cannot trade after -{dailyLoss} USDC in a day</Perm>
             <Perm can={false}>This agent cannot touch assets outside its allowlist</Perm>
             <div className="mt-3 rounded-lg border border-cyan/25 bg-cyan/5 px-3 py-2 text-xs text-cyan">
               Environment: {env}. Deployment stops when a limit trips or you pause it.

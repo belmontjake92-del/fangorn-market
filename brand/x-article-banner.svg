@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="800" viewBox="0 0 2000 800" fill="none">
+  <!-- Fangorn Market - X article header (2000x800, 5:2) -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="2000" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#060707"/>
+      <stop offset="0.6" stop-color="#080b08"/>
+      <stop offset="1" stop-color="#0b1109"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.72" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="#c6f24e" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#c6f24e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="2000" height="800" fill="url(#bg)"/>
+  <rect width="2000" height="800" fill="url(#glow)"/>
+
+  <!-- living-graph motif -->
+  <g stroke="#c6f24e" stroke-width="2.5" fill="none" opacity="0.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1400 660 L1400 400"/>
+    <path d="M1400 500 L1300 415"/>
+    <path d="M1400 500 L1515 435"/>
+    <path d="M1400 400 L1320 300"/>
+    <path d="M1400 400 L1545 320"/>
+    <path d="M1545 320 L1670 215"/>
+    <path d="M1670 215 L1810 145"/>
+    <path d="M1810 145 L1935 185"/>
+  </g>
+  <g fill="#c6f24e" opacity="0.6">
+    <circle cx="1300" cy="415" r="5"/>
+    <circle cx="1515" cy="435" r="5"/>
+    <circle cx="1320" cy="300" r="5"/>
+    <circle cx="1545" cy="320" r="6"/>
+    <circle cx="1670" cy="215" r="6"/>
+    <circle cx="1935" cy="185" r="6"/>
+  </g>
+  <circle cx="1810" cy="145" r="10" fill="#d4f76a"/>
+
+  <!-- mark -->
+  <g transform="translate(150,244) scale(4.2)">
+    <g stroke="#c6f24e" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M32 58V27"/><path d="M32 45 L21 35"/><path d="M32 45 L42 36"/>
+      <path d="M32 30 L25 21"/><path d="M32 30 L43 19"/><path d="M43 19 L52 9"/>
+    </g>
+    <g fill="#c6f24e">
+      <circle cx="21" cy="35" r="2.6"/><circle cx="42" cy="36" r="2.6"/>
+      <circle cx="25" cy="21" r="2.6"/><circle cx="43" cy="19" r="2.6"/>
+    </g>
+    <circle cx="52" cy="9" r="4" fill="#d4f76a"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="470" y="405" font-family="'Playfair Display', Georgia, serif" font-size="128" font-weight="700" fill="#fafafa">Fangorn <tspan fill="#c6f24e" font-style="italic">Market</tspan></text>
+
+  <!-- tagline -->
+  <text x="476" y="478" font-family="'IBM Plex Sans', 'Segoe UI', Arial, sans-serif" font-size="40" fill="#d8d8dc">Build smarter agents. Trade proven intelligence.</text>
+</svg>

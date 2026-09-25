@@ -34,10 +34,7 @@ export default function Overview() {
           </svg>
         </div>
         <div className="relative max-w-2xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-black/30 px-3 py-1 font-mono text-[11px] text-muted">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" /> Built for Robinhood Chain · Powered by Fangorn
-          </span>
-          <h1 className="mt-4 font-display text-4xl leading-tight text-fg">
+          <h1 className="font-display text-4xl leading-tight text-fg">
             Build smarter agents. <span className="text-accent">Trade proven intelligence.</span>
           </h1>
           <p className="mt-3 text-sm text-muted">

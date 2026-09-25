@@ -16,10 +16,23 @@ import { generateWorkerKeypair, unsealDek } from "@fangorn-market/x402pay";
 const PORT = Number(process.env.RH_WORKER_PORT ?? 4030);
 const RPC = process.env.RH_RPC_URL ?? "https://rpc.testnet.chain.robinhood.com";
 const REGISTRY = process.env.RH_PAID_REGISTRY as Address | undefined;
+const STEALTH_REGISTRY = process.env.RH_STEALTH_REGISTRY as Address | undefined;
 const MAX_AGE = 300; // seconds a signed /access request stays valid
 
 const REGISTRY_ABI = [
   { inputs: [{ name: "resourceId", type: "bytes32" }, { name: "buyer", type: "address" }], name: "isSettled", outputs: [{ name: "", type: "bool" }], stateMutability: "view", type: "function" },
+] as const;
+
+const PROOF_TUPLE = {
+  name: "proof", type: "tuple",
+  components: [
+    { name: "merkleTreeDepth", type: "uint256" }, { name: "merkleTreeRoot", type: "uint256" },
+    { name: "nullifier", type: "uint256" }, { name: "message", type: "uint256" },
+    { name: "scope", type: "uint256" }, { name: "points", type: "uint256[8]" },
+  ],
+} as const;
+const STEALTH_ABI = [
+  { inputs: [{ name: "resourceId", type: "bytes32" }, PROOF_TUPLE], name: "verifyAccess", outputs: [{ name: "", type: "bool" }], stateMutability: "view", type: "function" },
 ] as const;
 
 const dir = resolve(findRepoRoot(), ".data", "rh-worker");
@@ -88,8 +101,47 @@ app.post("/access", async (req, res) => {
   }
 });
 
+// Stealth access: the buyer proves, in zero knowledge, membership in the paid
+// group for this resource. We verify on-chain and never learn which member it is.
+app.post("/access-stealth", async (req, res) => {
+  try {
+    const { resourceId, proof } = req.body as {
+      resourceId: Hex;
+      proof: { merkleTreeDepth: number | string; merkleTreeRoot: string; nullifier: string; message: string; scope: string; points: string[] };
+    };
+    if (!STEALTH_REGISTRY) return res.status(500).json({ error: "RH_STEALTH_REGISTRY not configured" });
+    if (!proof || !Array.isArray(proof.points) || proof.points.length !== 8) return res.status(400).json({ error: "malformed proof" });
+    // message carries the proof timestamp, so an intercepted proof expires quickly.
+    if (Math.abs(Math.floor(Date.now() / 1000) - Number(proof.message)) > MAX_AGE) {
+      return res.status(401).json({ error: "stale proof" });
+    }
+    const tuple = {
+      merkleTreeDepth: BigInt(proof.merkleTreeDepth),
+      merkleTreeRoot: BigInt(proof.merkleTreeRoot),
+      nullifier: BigInt(proof.nullifier),
+      message: BigInt(proof.message),
+      scope: BigInt(proof.scope),
+      points: proof.points.map((p) => BigInt(p)) as unknown as readonly [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint],
+    };
+    // Semaphore reverts on proofs for unknown roots/depths; treat any failure as "not paid".
+    const ok = await client
+      .readContract({ address: STEALTH_REGISTRY, abi: STEALTH_ABI, functionName: "verifyAccess", args: [resourceId, tuple] })
+      .then((v) => v as boolean)
+      .catch(() => false);
+    if (!ok) return res.status(402).json({ error: "proof does not show paid membership for this resource" });
+    const dekFile = resolve(dir, `${resourceId}.dek`);
+    if (!existsSync(dekFile)) return res.status(404).json({ error: "resource not found" });
+    const sealed = hexToBytes(readFileSync(dekFile, "utf8") as `0x${string}`);
+    const dek = unsealDek(sealed, hexToBytes(keypair.privateKey));
+    res.json({ dek: `0x${Buffer.from(dek).toString("hex")}` });
+  } catch (e) {
+    res.status(500).json({ error: e instanceof Error ? e.message : "error" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`RH access worker on http://localhost:${PORT}`);
   console.log(`  registry: ${REGISTRY ?? "(set RH_PAID_REGISTRY)"}  rpc: ${RPC}`);
+  console.log(`  stealth : ${STEALTH_REGISTRY ?? "(set RH_STEALTH_REGISTRY)"}`);
   console.log(`  pubkey  : ${keypair.publicKey}`);
 });

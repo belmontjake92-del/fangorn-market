@@ -10,7 +10,9 @@
     "deploy:robinhood": "hardhat run scripts/deploy.ts --network robinhoodTestnet",
     "deploy:grove:robinhood": "hardhat run scripts/deploy-grove.ts --network robinhoodTestnet",
     "deploy:x402:robinhood": "hardhat run scripts/deploy-x402.ts --network robinhoodTestnet",
-    "typecheck": "hardhat compile"
+    "typecheck": "hardhat compile",
+    "deploy:stealth:robinhood": "hardhat run scripts/deploy-stealth.ts --network robinhoodTestnet",
+    "deploy:stealth:local": "hardhat run scripts/deploy-stealth.ts --network localhost"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
@@ -23,6 +25,9 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.1.0"
+    "@openzeppelin/contracts": "^5.1.0",
+    "@semaphore-protocol/contracts": "^4.14.2",
+    "@zk-kit/lean-imt.sol": "2.0.1",
+    "poseidon-solidity": "0.0.5"
   }
 }

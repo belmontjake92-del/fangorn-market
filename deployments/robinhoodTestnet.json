@@ -10,5 +10,11 @@
   "dataRegistryDeployedAt": "2026-07-29T08:06:34.235Z",
   "usdc": "0x674612b7429b4e0d461e531e100fcf48265c696f",
   "paidAccessRegistry": "0xe0fd59b9f68ea00166a54a9d909fb3aba43ce155",
-  "x402DeployedAt": "2026-07-29T08:18:19.831Z"
+  "x402DeployedAt": "2026-07-29T08:18:19.831Z",
+  "poseidonT3": "0x3333333C0A88F9BE4fd23ed0536F9B6c427e3B93",
+  "semaphoreVerifier": "0x5acfff6c84df2bf3105787cd74eba89e03d7960a",
+  "semaphore": "0xe8ffc6065c82e0d94a61249aea40a1990e6c7a09",
+  "stealthAccessRegistry": "0x9c84d2edc68e7c2b592e80b99b8d7c32645d9f85",
+  "stealthFromBlock": "124231467",
+  "stealthDeployedAt": "2026-09-25T18:24:58.386Z"
 }

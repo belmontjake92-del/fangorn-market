@@ -259,7 +259,7 @@ export default function Studio() {
                   ]}
                 />
                 <div className="mt-2 grid grid-cols-2 gap-2 text-[11px] text-dim">
-                  <div>Max DD: −{bt.data.metrics.maxDrawdownPct.toFixed(2)}%</div>
+                  <div>Max DD: -{bt.data.metrics.maxDrawdownPct.toFixed(2)}%</div>
                   <div>Fills: {bt.data.metrics.fills}</div>
                 </div>
               </>

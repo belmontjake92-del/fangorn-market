@@ -46,3 +46,9 @@ export {
   type RhSoldResource,
   type RhFetched,
 } from "./rh.js";
+export {
+  deriveStealthIdentity,
+  payAndFetchStealth,
+  type RhStealthConfig,
+  type RhStealthFetched,
+} from "./rh-stealth.js";
