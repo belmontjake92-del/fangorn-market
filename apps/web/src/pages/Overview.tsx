@@ -45,7 +45,7 @@ export default function Overview() {
             <Link to="/marketplace" className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-bg hover:bg-accent-bright">Explore Agents</Link>
             <Link to="/studio" className="rounded-full border border-border px-5 py-2 text-sm font-medium text-fg hover:border-accent/40 hover:text-accent">Open Agent Studio</Link>
           </div>
-          <p className="mt-4 font-mono text-[11px] text-dim">All performance shown is simulated on {NETWORK_LABEL}.</p>
+          <p className="mt-4 font-mono text-[11px] text-dim">Agent performance is a paper record, settled on-chain on {NETWORK_LABEL}.</p>
         </div>
       </div>
 

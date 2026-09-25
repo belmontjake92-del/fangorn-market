@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
-import { api, useCatalogDeploys, useDeployments, type DeploymentDetail, type DeploymentRow } from "../lib/api";
+import { api, useDeployments, type DeploymentDetail, type DeploymentRow } from "../lib/api";
 import { Sparkline } from "../components/Sparkline";
-import { CATALOG, CATEGORIES, RISK_LEVELS, type AgentState, type CatalogAgent } from "../lib/catalog";
+import { CATEGORIES, RISK_LEVELS, type AgentState } from "../lib/catalog";
 import { useNetwork, useNetworkMeta, withNet } from "../lib/prefs";
 import { toNum } from "../lib/format";
 
@@ -35,9 +35,6 @@ const stateStyle: Record<AgentState, string> = {
   backtest: "border-violet/40 text-violet bg-violet/10",
 };
 
-function catalogToAgent(c: CatalogAgent): MarketAgent {
-  return { ...c, id: c.id, href: "/studio", deploys: c.deploys, rating: c.rating, onchain: false };
-}
 
 function realToAgent(d: DeploymentRow, netLabel: string, detail?: DeploymentDetail): MarketAgent {
   const kind = d.kind ?? "trade";
@@ -148,7 +145,6 @@ const Chip = ({ children }: { children: React.ReactNode }) => (
 export default function Marketplace() {
   const net = useNetwork();
   const netLabel = useNetworkMeta().label;
-  const deployCounts = useCatalogDeploys();
   const deployments = useDeployments();
   const details = useQueries({
     queries: (deployments.data ?? [])
@@ -164,7 +160,7 @@ export default function Marketplace() {
   const agents = useMemo<MarketAgent[]>(() => {
     const detailMap = new Map(details.map((q) => [q.data?.deployment.id, q.data]).filter(([k]) => k) as [string, DeploymentDetail][]);
     const real = (deployments.data ?? []).map((d) => realToAgent(d, netLabel, detailMap.get(d.id)));
-    return [...real, ...CATALOG.map(catalogToAgent)];
+    return real; // only agents that actually ran and settled on-chain
   }, [deployments.data, details, netLabel]);
 
   const filtered = agents
@@ -217,10 +213,10 @@ export default function Marketplace() {
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {filtered.map((a) => (
-              <AgentCard key={a.href + a.name} a={a} extra={deployCounts.data?.[a.id] ?? 0} />
+              <AgentCard key={a.href + a.name} a={a} extra={0} />
             ))}
           </div>
-          <p className="mt-6 text-center text-[11px] text-dim">Catalog performance is simulated mock data. On-chain agents show live {netLabel} data.</p>
+          <p className="mt-6 text-center text-[11px] text-dim">Every agent listed here actually ran. Fills are settled on-chain on {netLabel} against the oracle price (paper, not live capital).</p>
         </div>
       </div>
     </div>

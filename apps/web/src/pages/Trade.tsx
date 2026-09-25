@@ -14,22 +14,6 @@ import {
   type Token,
 } from "../lib/dex";
 
-/** An agent's proposed spot order - the user chooses whether to execute it. */
-interface Proposal {
-  agent: string;
-  rationale: string;
-  fromSymbol: string;
-  toSymbol: string;
-  amount: string;
-}
-
-// Example agent proposals (signal → proposed order). Real signal wiring plugs in
-// here later; the user always executes from their own wallet.
-const PROPOSALS: Proposal[] = [
-  { agent: "Momentum-ETH", rationale: "Trend up on 4h; rotate USDC → ETH.", fromSymbol: "USDC", toSymbol: "ETH", amount: "100" },
-  { agent: "ARB-MeanRevert", rationale: "ARB stretched below band; accumulate.", fromSymbol: "USDC", toSymbol: "ARB", amount: "50" },
-  { agent: "Risk-Off", rationale: "Volatility spike; de-risk ETH → USDC.", fromSymbol: "ETH", toSymbol: "USDC", amount: "0.05" },
-];
 
 const SLIPPAGE_OPTIONS = [50, 100, 300]; // bps
 
@@ -152,31 +136,6 @@ export default function Trade() {
           </span>
         </div>
       )}
-
-      {/* Agent proposals */}
-      <div className="mt-6">
-        <div className="mb-2 text-xs uppercase tracking-wide text-dim">Agent proposals</div>
-        <div className="grid gap-2 sm:grid-cols-3">
-          {PROPOSALS.map((p) => (
-            <button
-              key={p.agent}
-              onClick={() => {
-                setFromSym(p.fromSymbol);
-                setToSym(p.toSymbol);
-                setAmount(p.amount);
-              }}
-              className="rounded-xl border border-border bg-surface p-3 text-left hover:border-accent/40"
-            >
-              <div className="text-sm text-fg">{p.agent}</div>
-              <div className="mt-1 text-[11px] text-dim">{p.rationale}</div>
-              <div className="mt-2 font-mono text-[11px] text-accent">
-                {p.amount} {p.fromSymbol} → {p.toSymbol}
-              </div>
-            </button>
-          ))}
-        </div>
-        <p className="mt-2 text-[10px] text-dim">Proposals are suggestions from agent signals - you decide and sign.</p>
-      </div>
 
       {/* Swap widget */}
       <Card className="mt-6 space-y-4 p-5">

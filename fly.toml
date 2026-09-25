@@ -8,8 +8,8 @@ primary_region = "iad"
 [env]
   PORT = "8080"
   NODE_ENV = "production"
-  # Run the always-on paper worker so agents keep trading around the clock.
-  AGENT_WORKER = "1"
+  # Paper worker disabled: the site shows only real on-chain activity.
+  AGENT_WORKER = "0"
   WORKER_INTERVAL_MS = "180000"
 
 [http_service]
